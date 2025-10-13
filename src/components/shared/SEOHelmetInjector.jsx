@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 const SEOHelmetInjector = ({
@@ -16,8 +15,10 @@ const SEOHelmetInjector = ({
 
     console.log(title, description, current_location);
 
+    return null;
+
     return (
-        <Helmet key={title}>
+        <>
             {/* Basic SEO */}
             <title>{title}</title>
             <meta name="description" content={description} />
@@ -40,7 +41,7 @@ const SEOHelmetInjector = ({
 
             {/* Canonical */}
             <link rel="canonical" href={pathname} />
-        </Helmet>
+        </>
     );
 };
 
