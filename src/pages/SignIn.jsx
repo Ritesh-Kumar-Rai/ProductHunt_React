@@ -1,17 +1,94 @@
-import React from 'react';
+import { useRef, useState } from 'react';
 import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/themes';
 import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
+import Utility from '../Utils/Utility';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+const guestCredentials = {
+    email: "guest@demo.com",
+    password: "Guest@1234"
+};
+
 
 // The User Authentication Page
 const SignIn = () => {
 
-    const handleSubmit = (e) => {
+    const login_email = useRef(null);
+    const login_password = useRef(null);
+
+    const register_username = useRef(null);
+    const register_email = useRef(null);
+    const register_password = useRef(null);
+    const register_cpassword = useRef(null);
+
+    const [loginError, setLoginError] = useState({});
+    const [registerError, setRegisterError] = useState({});
+
+    const [showPassword, setShowPassword] = useState({ login_p: false, register_p: false, register_cp: false });
+
+    const navigate = useNavigate();
+
+
+    const handleLoginSubmit = (e) => {
+        e.preventDefault();
+        const email = login_email?.current?.value || '';
+        const password = login_password?.current?.value || '';
+
+        const loginErrorObj = Utility.validateForm(null, { email, password });
+        setLoginError(loginErrorObj);
+
+        if (Object.keys(loginErrorObj).length === 0) {
+            toast.success("login Success");
+        }
+
+        if (Object.keys(loginErrorObj).length > 0) {
+            toast.warning('Oops! Something went wrong, Check for Credentials');
+        }
+    }
+
+    const handleRegisterSubmit = (e) => {
         e.preventDefault();
 
-        const fm = new FormData(e.target);
+        const username = register_username?.current?.value || '';
+        const email = register_email?.current?.value || '';
+        const password = register_password?.current?.value || '';
+        const confirmPassword = register_cpassword?.current?.value || '';
 
-        alert('form submitted!')
-    }
+        const registerErrorObj = Utility.validateForm('register', { username, email, password, confirmPassword });
+
+        if (Object.keys(registerErrorObj)?.length === 0) {
+            setRegisterError({});
+            toast.success("Hurray! Registration is completed😍");
+        } else if (Object.keys(registerErrorObj)?.length > 0) {
+            setRegisterError(registerErrorObj);
+            toast.warning("Oops! Somewhere in Credentials is wrong check it now😅");
+        }
+    };
+
+    const handleGuestLogin = (event) => {
+        if (login_email.current && login_password.current) {
+            login_email.current.value = guestCredentials.email;
+            login_password.current.value = guestCredentials.password;
+
+            // Optional: visually highlight the fields
+            login_email.current.classList.add("ring-2", "ring-indigo-400");
+            login_password.current.classList.add("ring-2", "ring-indigo-400");
+
+            setTimeout(() => {
+                toast("redirecting to Home Page...");
+                setTimeout(() => {
+                    navigate('/');
+                    setTimeout(() => {
+                        toast.info("Logged in as Guest😉");
+                    }, 2000);
+                }, 2000);
+
+            }, 5000);
+            handleLoginSubmit(event);
+        }
+    };
+
 
     return (
         // <section className='w-full m-auto flex items-center justify-center'>
@@ -28,26 +105,35 @@ const SignIn = () => {
 
                     <Box pt="3">
                         <Tabs.Content value="login">
-                            <form action="#" method="post" onSubmit={handleSubmit}>
+                            <form action="#" method="post" onSubmit={handleLoginSubmit}>
                                 <Heading as='h2'>Sign in to your account</Heading>
 
                                 <div className="form-control my-4">
                                     <label htmlFor="email" className='block my-2'>Your Email</label>
                                     <input type="email" name="email" id="email"
+                                        ref={login_email}
                                         className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder='name@company.com' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Email is required.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{loginError?.email}</span>
                                 </div>
 
                                 <div className="form-control my-4">
                                     <label htmlFor="pass" className='block my-2'>Password</label>
-                                    <input type="password" name="pass" id="pass"
-                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                    <input type={showPassword?.login_p ? "text" : "password"} name="pass" id="pass"
+                                        ref={login_password}
+                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base dark:text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                         placeholder='••••••••' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Password is required.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{loginError?.password}</span>
                                 </div>
 
                                 <div className='my-5'>
-                                    <Text as="label" size="2" style={{ cursor: 'pointer' }}>
+                                    <Text as="label" size="2" mb='2' style={{ cursor: 'pointer', display: 'block', userSelect: 'none' }}>
+                                        <Flex gap="2">
+                                            <Checkbox color='indigo' checked={showPassword?.login_p || false} onCheckedChange={(checked) => setShowPassword((prev) => ({ ...prev, login_p: checked }))} />
+                                            Show Password
+                                        </Flex>
+                                    </Text>
+
+                                    <Text as="label" size="2" style={{ cursor: 'pointer', userSelect: 'none' }}>
                                         <Flex gap="2">
                                             <Checkbox color='indigo' defaultChecked />
                                             Remember Me
@@ -59,40 +145,61 @@ const SignIn = () => {
                                 <div className='flex items-center justify-center my-2'>
                                     <Button size='3'>Log in to your account</Button>
                                 </div>
+                                <div className='flex items-center justify-center my-2'>
+                                    <Button size="3" color="gray" variant="soft" onClick={handleGuestLogin}>
+                                        Login as Guest
+                                    </Button>
+                                </div>
                             </form>
                         </Tabs.Content>
 
                         <Tabs.Content value="create-account">
-                            <form action="#" method="post" onSubmit={handleSubmit}>
+                            <form action="#" method="post" onSubmit={handleRegisterSubmit}>
                                 <Heading as='h2'>Create a new Account</Heading>
 
                                 <div className="form-control my-4">
                                     <label htmlFor="name" className='block my-2'>Your Name</label>
                                     <input type="text" name="username" id="name"
+                                        ref={register_username}
                                         className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder='Ritesh Kumar Rai' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Username is required.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{registerError?.username}</span>
                                 </div>
 
                                 <div className="form-control my-4">
                                     <label htmlFor="email" className='block my-2'>Your Email</label>
                                     <input type="email" name="" id="email"
+                                        ref={register_email}
                                         className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" placeholder='name@company.com' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Email is required.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{registerError?.email}</span>
                                 </div>
 
                                 <div className="form-control my-4">
                                     <label htmlFor="pass" className='block my-2'>Password</label>
-                                    <input type="password" name="" id="pass"
-                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                    <input type={showPassword.register_p ? "text" : "password"} name="" id="pass"
+                                        ref={register_password}
+                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base dark:text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                         placeholder='••••••••' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Password must be number,special character,word and 8 digit long.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{registerError?.password}</span>
+                                    <Text as="label" size="2" my='2' style={{ cursor: 'pointer', display: 'block', userSelect: 'none' }}>
+                                        <Flex gap="2">
+                                            <Checkbox color='indigo' checked={showPassword?.register_p || false} onCheckedChange={(checked) => setShowPassword((prev) => ({ ...prev, register_p: checked }))} />
+                                            Show Password
+                                        </Flex>
+                                    </Text>
                                 </div>
                                 <div className="form-control my-4">
                                     <label htmlFor="cpass" className='block my-2'>Confirm Password</label>
-                                    <input type="password" name="" id="cpass"
-                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                                    <input type={showPassword?.register_cp ? "text" : "password"} name="" id="cpass"
+                                        ref={register_cpassword}
+                                        className="block w-full rounded-md bg-gray-100 dark:bg-white/5 px-3 py-1.5 text-base dark:text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                                         placeholder='••••••••' />
-                                    <span style={{ color: 'crimson', fontSize: 'small' }}>Password is not same.</span>
+                                    <span style={{ color: 'crimson', fontSize: 'small' }}>{registerError?.confirmPassword}</span>
+                                    <Text as="label" size="2" my='2' style={{ cursor: 'pointer', display: 'block', userSelect: 'none' }}>
+                                        <Flex gap="2">
+                                            <Checkbox color='indigo' checked={showPassword?.register_cp || false} onCheckedChange={(checked) => setShowPassword((prev) => ({ ...prev, register_cp: checked }))} />
+                                            Show Password
+                                        </Flex>
+                                    </Text>
                                 </div>
 
                                 <div className='flex items-center justify-center my-2'>
