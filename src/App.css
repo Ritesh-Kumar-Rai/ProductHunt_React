@@ -1,0 +1,7 @@
+/* .slider-wrapper .axis-horizontal{
+    height: auto;
+    background-color: red; */
+
+html.dark .product-hunt-icon{
+    filter: brightness(0) invert(1);
+}
