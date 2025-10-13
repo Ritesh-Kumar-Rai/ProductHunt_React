@@ -148,3 +148,7 @@ Then use it like:
 ```
 
 ### In case, you have used default meta tags or title in index.html then add an attribute like data-rh='true', so that Helmet will override it
+
+## LICENSE
+
+[MIT License](LICENSE)
