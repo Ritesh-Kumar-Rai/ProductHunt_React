@@ -104,7 +104,7 @@ const SelectedItemCard = ({ product_id, image_url = '', darkmode_image_url = '',
   return (
     <div className="relative rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6 group">
       {/* discount div */}
-      <div className="absolute top-1 right-1 bg-green-600 rounded text-white p-0.5 text-xs hidden group-hover:block">-{discount}</div>
+      <div className="absolute top-1 right-1 bg-green-600 rounded text-white p-0.5 text-xs hidden group-hover:block">-{discount}%</div>
       {/* discount div end*/}
       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
         <a href="#" className="shrink-0 md:order-1">
