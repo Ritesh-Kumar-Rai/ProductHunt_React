@@ -10,6 +10,38 @@ const guestCredentials = {
     password: "Guest@1234"
 };
 
+const showLoadingToast = (message = "All is good.") => {
+    const id = toast.loading(message);
+    return {
+        pending: (msg) => toast.update(id, { render: msg, isLoading: true }),
+        success: (msg) => toast.update(id, { render: msg, type: 'success', isLoading: false, autoClose: 3000 }),
+        error: (msg) => toast.update(id, { render: msg, type: 'error', isLoading: false, autoClose: 3000 }),
+    };
+};
+
+const fakePromise = (timer = 2000) => new Promise((resolve) => setTimeout(resolve, timer));
+
+const verifyUserCredentials = async (email, password) => {
+    const toastHandler = showLoadingToast("Please wait... while we are checking credentials");
+    try {
+        await fakePromise(3000);
+        toastHandler.pending("logging in...");
+        await fakePromise(5000);
+        if (!email || !password) {
+            throw new ReferenceError("Email and Password required!");
+        }
+
+        if (email === guestCredentials.email && password === guestCredentials.password) {
+            toastHandler.success("Logged in successfully!");
+        } else if (email !== guestCredentials.email) {
+            toastHandler.error("Email is invalid!");
+        } else if (password !== guestCredentials.password) {
+            toastHandler.error("Password is invalid!");
+        }
+    } catch (error) {
+        toastHandler.error("Login failed! Invalid Credentials.. try again");
+    }
+};
 
 // The User Authentication Page
 const SignIn = () => {
@@ -27,11 +59,14 @@ const SignIn = () => {
 
     const [showPassword, setShowPassword] = useState({ login_p: false, register_p: false, register_cp: false });
 
+    const [loadingState, setLoadingState] = useState({ guest_loading: false, login_loading: false });
+
     const navigate = useNavigate();
 
 
-    const handleLoginSubmit = (e) => {
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
+        setLoadingState(prev => ({ ...prev, login_loading: true }));
         const email = login_email?.current?.value || '';
         const password = login_password?.current?.value || '';
 
@@ -39,12 +74,11 @@ const SignIn = () => {
         setLoginError(loginErrorObj);
 
         if (Object.keys(loginErrorObj).length === 0) {
-            toast.success("login Success");
+            await verifyUserCredentials(email, password);
+        } else {
+            toast.warning('Oops! Something went wrong, Check your Credentials');
         }
-
-        if (Object.keys(loginErrorObj).length > 0) {
-            toast.warning('Oops! Something went wrong, Check for Credentials');
-        }
+        setLoadingState(prev => ({ ...prev, login_loading: false }));
     }
 
     const handleRegisterSubmit = (e) => {
@@ -66,8 +100,12 @@ const SignIn = () => {
         }
     };
 
-    const handleGuestLogin = (event) => {
+    const handleGuestLogin = async (event) => {
+        event.preventDefault();
         if (login_email.current && login_password.current) {
+            setLoadingState(prev => ({ ...prev, guest_loading: true }));
+            await fakePromise(2000);
+
             login_email.current.value = guestCredentials.email;
             login_password.current.value = guestCredentials.password;
 
@@ -75,17 +113,7 @@ const SignIn = () => {
             login_email.current.classList.add("ring-2", "ring-indigo-400");
             login_password.current.classList.add("ring-2", "ring-indigo-400");
 
-            setTimeout(() => {
-                toast("redirecting to Home Page...");
-                setTimeout(() => {
-                    navigate('/');
-                    setTimeout(() => {
-                        toast.info("Logged in as Guest😉");
-                    }, 2000);
-                }, 2000);
-
-            }, 5000);
-            handleLoginSubmit(event);
+            setLoadingState(prev => ({ ...prev, guest_loading: false }));
         }
     };
 
@@ -143,10 +171,10 @@ const SignIn = () => {
                                 </div>
 
                                 <div className='flex items-center justify-center my-2'>
-                                    <Button size='3'>Log in to your account</Button>
+                                    <Button size='3' loading={loadingState?.login_loading ?? false}>Log in to your account</Button>
                                 </div>
                                 <div className='flex items-center justify-center my-2'>
-                                    <Button size="3" color="gray" variant="soft" onClick={handleGuestLogin}>
+                                    <Button size="3" type='button' color="gray" variant="soft" onClick={handleGuestLogin} loading={loadingState?.guest_loading ?? false}>
                                         Login as Guest
                                     </Button>
                                 </div>
