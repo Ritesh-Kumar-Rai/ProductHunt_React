@@ -54,7 +54,7 @@ const Header = () => {
                 <div className='flex items-center gap-5 flex-wrap p-2 lg:p-0'>
                     <Link type='button' to='/signin' className='px-4 py-1 bg-white dark:bg-gray-600 rounded-md border-2 border-transparent hover:border-gray-400'>Sign In</Link>
                     <Link type='button' to='/wishlist' className='w-fit h-fit py-1 px-2 bg-white dark:bg-gray-600 rounded-md border-2 border-transparent hover:border-gray-400'><FaRegHeart /></Link>
-                    <Link type='button' to='/shoppingcart' className='w-fit py-1 px-4 bg-white dark:bg-gray-600 rounded-md flex items-center gap-2  border-2 border-transparent hover:border-gray-400'><FaCartShopping /> Cart <span className='w-5 h-5 bg-black text-orange-600 rounded-full flex items-center justify-center'>{Utility.findLengthOfCart(state.cart)}</span></Link>
+                    <Link type='button' to='/shoppingcart' className='w-fit py-1 pl-4 pr-1 bg-white dark:bg-gray-600 rounded-md flex items-center gap-2  border-2 border-transparent hover:border-gray-400'><FaCartShopping /> Cart <span className='min-w-5 h-5 px-1 bg-black text-xs text-orange-600 rounded-md flex items-center justify-center'>{Utility.findLengthOfCart(state.cart)}</span></Link>
                 </div>
             </nav>
             <div className='flex gap-3 md:gap-5 items-center'>
