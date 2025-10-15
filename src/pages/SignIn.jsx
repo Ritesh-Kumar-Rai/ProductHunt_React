@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react';
 import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/themes';
-import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
+//import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import Utility from '../Utils/Utility';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const guestCredentials = {
-    email: "guest@demo.com",
-    password: "Guest@1234"
+    email: process.env.REACT_APP_GUEST_LOGIN_EMAIL,
+    password: process.env.REACT_APP_GUEST_LOGIN_PASSWORD,
 };
 
 const showLoadingToast = (message = "All is good.") => {
@@ -40,6 +40,7 @@ const verifyUserCredentials = async (email, password) => {
         }
     } catch (error) {
         toastHandler.error("Login failed! Invalid Credentials.. try again");
+        console.error(error.message);
     }
 };
 
@@ -122,7 +123,7 @@ const SignIn = () => {
         // <section className='w-full m-auto flex items-center justify-center'>
         <section id='sign-container' className='min-h-[500px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg shadow-lg p-2 flex items-center justify-center'>
 
-            <SEOHelmetInjector title='SignIn | ProductHunt' description='Login to our ProductHunt to Buy for favourite products today' />
+            {/* <SEOHelmetInjector title='SignIn | ProductHunt' description='Login to our ProductHunt to Buy for favourite products today' /> */}
 
             <div className='w-96 m-auto rounded-lg shadow-lg bg-white dark:bg-zinc-950 py-1 px-2'>
                 <Tabs.Root defaultValue="login" mt='2'>
