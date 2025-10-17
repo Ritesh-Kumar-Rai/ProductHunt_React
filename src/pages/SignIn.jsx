@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/themes';
 //import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import Utility from '../Utils/Utility';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuthManager from '../hooks/useAuthManager';
+import { useAuthContext } from '../context/AuthContext';
 
 const guestCredentials = {
     username: process.env.REACT_APP_GUEST_LOGIN_USERNAME,
@@ -38,7 +39,7 @@ class RegisterError extends Error {
 
 const fakePromise = (timer = 2000) => new Promise((resolve) => setTimeout(resolve, timer));
 
-const verifyUserCredentials = async (email, password, loginUserFn) => {
+const verifyUserCredentials = async (email, password, loginUserFn, dispatchFn) => {
     const toastHandler = showLoadingToast("Please wait... while we are checking credentials");
     try {
         await fakePromise(3000);
@@ -47,7 +48,7 @@ const verifyUserCredentials = async (email, password, loginUserFn) => {
         if (!email || !password) {
             throw new LoginError("Email and Password required!");
         }
-        if (!loginUserFn) throw new ReferenceError('Unknown Server missing... please contact admin!');
+        if (!loginUserFn || !dispatchFn) throw new ReferenceError('Unknown Server missing... please contact admin!');
         await fakePromise(2000);
         const result = loginUserFn(email, password);
         if (result.success) {
@@ -56,6 +57,14 @@ const verifyUserCredentials = async (email, password, loginUserFn) => {
             } else {
                 toastHandler.success("Logged in successfully🤩");
             }
+
+            dispatchFn({
+                type: 'LOGIN',
+                payload: {
+                    user: result.user,
+                    isGuest: result.isGuest
+                }
+            });
         } else {
             // login failed
             throw new LoginError(result.error || 'Unknown Error While Login!');
@@ -90,6 +99,15 @@ const SignIn = () => {
     // using custom hook for login and registrying users
     const { registerUser, loginUser } = useAuthManager();
 
+    // consuming AuthContext Reducer values
+    const { state, dispatch } = useAuthContext();
+
+    useEffect(() => {
+        if (state?.isAuthenticated) {
+            navigate('/');
+        }
+    }, [state]);
+
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -101,7 +119,7 @@ const SignIn = () => {
         setLoginError(loginErrorObj);
 
         if (Object.keys(loginErrorObj).length === 0) {
-            await verifyUserCredentials(email, password, loginUser);
+            await verifyUserCredentials(email, password, loginUser, dispatch);
         } else {
             toast.warning('Oops! Something went wrong, Check your Credentials');
         }

@@ -9,6 +9,7 @@ import ProductContextProvider from "./context/ProductContext";
 import ContactPage from "./pages/ContactPage";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import { ToastContainer } from "react-toastify";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const Home = lazy(() => import("./pages/Home"));
 const Explore = lazy(() => import("./pages/Explore"));
@@ -22,24 +23,29 @@ function App() {
     <>
       <BrowserRouter>
         <ProductContextProvider>
-          <Header />
-          <main className="min-h-screen w-full px-4 py-2 dark:bg-gray-950 dark:text-white scroll-smooth">
-            <ErrorBoundary>
-              <Suspense fallback={<Loader />}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/explore" element={<Explore />} />
-                  <Route path="/product/:productId" element={<Product />} />
-                  <Route path="/wishlist" element={<WishlistPage />} />
-                  <Route path="/shoppingcart" element={<ShoppingCartPage />} />
-                  <Route path="/signin" element={<SignIn />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-              </Suspense>
-              <ToastContainer theme="dark" />
-            </ErrorBoundary>
-          </main>
+          <AuthContextProvider>
+            <Header />
+            <main className="min-h-screen w-full px-4 py-2 dark:bg-gray-950 dark:text-white scroll-smooth">
+              <ErrorBoundary>
+                <Suspense fallback={<Loader />}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/explore" element={<Explore />} />
+                    <Route path="/product/:productId" element={<Product />} />
+                    <Route path="/wishlist" element={<WishlistPage />} />
+                    <Route
+                      path="/shoppingcart"
+                      element={<ShoppingCartPage />}
+                    />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="*" element={<PageNotFound />} />
+                  </Routes>
+                </Suspense>
+                <ToastContainer theme="dark" />
+              </ErrorBoundary>
+            </main>
+          </AuthContextProvider>
         </ProductContextProvider>
         <Footer />
       </BrowserRouter>
