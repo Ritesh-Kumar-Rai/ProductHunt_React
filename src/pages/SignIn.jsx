@@ -4,8 +4,10 @@ import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/them
 import Utility from '../Utils/Utility';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import useAuthManager from '../hooks/useAuthManager';
 
 const guestCredentials = {
+    username: process.env.REACT_APP_GUEST_LOGIN_USERNAME,
     email: process.env.REACT_APP_GUEST_LOGIN_EMAIL,
     password: process.env.REACT_APP_GUEST_LOGIN_PASSWORD,
 };
@@ -19,28 +21,49 @@ const showLoadingToast = (message = "All is good.") => {
     };
 };
 
+// custom error
+class LoginError extends Error {
+    constructor(msg) {
+        super(msg);
+        this.name = "LoginError";
+    };
+};
+
+class RegisterError extends Error {
+    constructor(msg) {
+        super(msg);
+        this.name = "RegisterError";
+    };
+};
+
 const fakePromise = (timer = 2000) => new Promise((resolve) => setTimeout(resolve, timer));
 
-const verifyUserCredentials = async (email, password) => {
+const verifyUserCredentials = async (email, password, loginUserFn) => {
     const toastHandler = showLoadingToast("Please wait... while we are checking credentials");
     try {
         await fakePromise(3000);
         toastHandler.pending("logging in...");
         await fakePromise(5000);
         if (!email || !password) {
-            throw new ReferenceError("Email and Password required!");
+            throw new LoginError("Email and Password required!");
+        }
+        if (!loginUserFn) throw new ReferenceError('Unknown Server missing... please contact admin!');
+        await fakePromise(2000);
+        const result = loginUserFn(email, password);
+        if (result.success) {
+            if (result?.isGuest) {
+                toastHandler.success("Logged in as guest😉");
+            } else {
+                toastHandler.success("Logged in successfully🤩");
+            }
+        } else {
+            // login failed
+            throw new LoginError(result.error || 'Unknown Error While Login!');
         }
 
-        if (email === guestCredentials.email && password === guestCredentials.password) {
-            toastHandler.success("Logged in successfully!");
-        } else if (email !== guestCredentials.email) {
-            toastHandler.error("Email is invalid!");
-        } else if (password !== guestCredentials.password) {
-            toastHandler.error("Password is invalid!");
-        }
     } catch (error) {
-        toastHandler.error("Login failed! Invalid Credentials.. try again");
-        console.error(error.message);
+        toastHandler.error(`${error.name} -> ${error.message}`);
+        console.error(error.name, error.message);
     }
 };
 
@@ -64,6 +87,9 @@ const SignIn = () => {
 
     const navigate = useNavigate();
 
+    // using custom hook for login and registrying users
+    const { registerUser, loginUser } = useAuthManager();
+
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -75,14 +101,14 @@ const SignIn = () => {
         setLoginError(loginErrorObj);
 
         if (Object.keys(loginErrorObj).length === 0) {
-            await verifyUserCredentials(email, password);
+            await verifyUserCredentials(email, password, loginUser);
         } else {
             toast.warning('Oops! Something went wrong, Check your Credentials');
         }
         setLoadingState(prev => ({ ...prev, login_loading: false }));
     }
 
-    const handleRegisterSubmit = (e) => {
+    const handleRegisterSubmit = async (e) => {
         e.preventDefault();
 
         const username = register_username?.current?.value || '';
@@ -94,7 +120,19 @@ const SignIn = () => {
 
         if (Object.keys(registerErrorObj)?.length === 0) {
             setRegisterError({});
-            toast.success("Hurray! Registration is completed😍");
+            const toastHandler = showLoadingToast("Creating Account... please wait");
+            try {
+                await fakePromise(3000);
+                const result = registerUser({ username, email, password });
+                if (result.success) {
+                    toastHandler.success("Hurray! Registration is completed😍");
+                } else {
+                    throw new RegisterError(result.error || 'Failed to create account! try again 🤔');
+                }
+            } catch (error) {
+                toastHandler.error(`${error.name} -> ${error.message}`);
+                console.error(error.name, error.message);
+            }
         } else if (Object.keys(registerErrorObj)?.length > 0) {
             setRegisterError(registerErrorObj);
             toast.warning("Oops! Somewhere in Credentials is wrong check it now😅");
