@@ -1,7 +1,7 @@
-import { Box, Container, Flex, Tabs, Text } from '@radix-ui/themes'
-import React from 'react'
+import { Box, Container, Flex, Tabs, Text } from '@radix-ui/themes';
 
-const TabNavigation = ({ reviewsInfo, description }) => {
+const TabNavigation = ({ reviewsInfo, description, returnPolicy, qrCodeImg }) => {
+
 	return (
 		<Tabs.Root defaultValue="description" mt='2'>
 			<Tabs.List>
@@ -44,13 +44,13 @@ const TabNavigation = ({ reviewsInfo, description }) => {
 				</Tabs.Content>
 
 				<Tabs.Content value="return-policy">
-					<Text size="2">No return policy.</Text>
+					<Text size="2">{returnPolicy || "No return policy"}</Text>
 				</Tabs.Content>
 
 				<Tabs.Content value="barcode">
 					<Text size="2">Scan the Barcode.</Text>
 					<Flex align='center' justify='center' maxHeight='15rem' p='1'>
-						<img src="https://cdn.dummyjson.com/public/qr-code.png" alt="barcode" className='object-fill h-full rounded-md' />
+						<img src={qrCodeImg} alt="barcode" className='object-fill h-full rounded-md' />
 					</Flex>
 				</Tabs.Content>
 

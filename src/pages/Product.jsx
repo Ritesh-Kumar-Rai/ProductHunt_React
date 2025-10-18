@@ -256,7 +256,7 @@ const Product = () => {
           <div className='col-span-1 md:col-span-2 rounded-xl shadow-xl p-3 min-h-96'>
             <Heading as='h2' size='7'>Product Details</Heading>
             <p className='text-sm md:text-lg font-medium text-gray-500 md:leading-10'>Everything you need to know about our premium product</p>
-            <TabNavigation reviewsInfo={isLoading ? null : data?.reviews} description={isLoading ? null : data?.description} />
+            <TabNavigation reviewsInfo={isLoading ? null : data?.reviews} description={isLoading ? null : data?.description} returnPolicy={isLoading ? null : data?.returnPolicy} qrCodeImg={isLoading ? null : data?.meta?.qrCode} />
           </div>
         </section>
       </article>
