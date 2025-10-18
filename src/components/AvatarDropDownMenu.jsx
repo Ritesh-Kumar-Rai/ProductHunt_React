@@ -1,7 +1,22 @@
 import { Avatar, Badge, DropdownMenu } from "@radix-ui/themes";
 import { BiLogOut } from "react-icons/bi";
+import ConfirmDialog from "./shared/ConfirmDialog";
+import { toast } from "react-toastify";
+import { useAuthContext } from "../context/AuthContext";
 
 const AvatarDropDownMenu = ({ userInfo }) => {
+
+    const { dispatch } = useAuthContext();
+
+    const onLogout = () => {
+        toast.error(`Oh No '${userInfo?.user_data?.username}' you are loggedOut😶`);
+        dispatch({
+            type: 'LOGOUT'
+        });
+
+        sessionStorage.removeItem(process.env.REACT_APP_SESSIONSTORAGE_KEYNAME);
+    };
+
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
@@ -14,7 +29,16 @@ const AvatarDropDownMenu = ({ userInfo }) => {
                 {userInfo?.user_data?.isGuest && <DropdownMenu.Label><Badge color="green">Guest</Badge></DropdownMenu.Label>}
                 <DropdownMenu.Item>Settings</DropdownMenu.Item>
                 <DropdownMenu.Separator />
-                <DropdownMenu.Item color="red">Logout <BiLogOut size={20} /> </DropdownMenu.Item>
+
+                {/* using a confirmdialog for logout */}
+                <ConfirmDialog
+                    trigger={<DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>Logout <BiLogOut size={20} /> </DropdownMenu.Item>}
+                    onConfirm={onLogout}
+                    title="Confirm Logout"
+                    description="Are you sure you want to logout?"
+                    confirmText="Logout"
+                    cancelText="Cancel" />
+
             </DropdownMenu.Content>
         </DropdownMenu.Root>
     )
