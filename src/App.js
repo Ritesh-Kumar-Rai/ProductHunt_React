@@ -4,12 +4,14 @@ import Header from "./components/Header";
 import Loader from "./components/Loader";
 import Footer from "./components/Footer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PageNotFound from "./components/PageNotFound";
+import PageError from "./components/shared/PageError";
 import ProductContextProvider from "./context/ProductContext";
 import ContactPage from "./pages/ContactPage";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from "./context/AuthContext";
+import BlockPublicRoutes from "./components/shared/BlockPublicRoutes";
+import ProtectedRoutes from "./components/shared/ProtectedRoutes";
 
 const Home = lazy(() => import("./pages/Home"));
 const Explore = lazy(() => import("./pages/Explore"));
@@ -35,11 +37,32 @@ function App() {
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route
                       path="/shoppingcart"
-                      element={<ShoppingCartPage />}
+                      element={
+                        <ProtectedRoutes>
+                          <ShoppingCartPage />
+                        </ProtectedRoutes>
+                      }
                     />
-                    <Route path="/signin" element={<SignIn />} />
+                    <Route
+                      path="/signin"
+                      element={
+                        <BlockPublicRoutes>
+                          <SignIn />
+                        </BlockPublicRoutes>
+                      }
+                    />
                     <Route path="/contact" element={<ContactPage />} />
-                    <Route path="*" element={<PageNotFound />} />
+                    <Route
+                      path="/dashboard"
+                      element={
+                        <PageError
+                          error_code={401}
+                          error_name="Unauthorized Access"
+                          error_message="Please log in with the appropriate credentials to access this resource."
+                        />
+                      }
+                    />
+                    <Route path="*" element={<PageError />} />
                   </Routes>
                 </Suspense>
                 <ToastContainer theme="dark" />

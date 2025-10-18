@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-const PageNotFound = () => {
+const PageNotFound = ({ error_code = 404, error_name = "Page not found", error_message = "Sorry, we couldn't find this page you're looking for." }) => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 text-center">
         <div className="mb-8">
-          <h2 className="mt-6 text-6xl font-extrabold text-gray-900 dark:text-gray-100">404</h2>
-          <p className="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">Page not found</p>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Sorry, we couldn't find this page you're looking for.</p>
+          <h2 className="mt-6 text-6xl font-extrabold text-gray-900 dark:text-gray-100">{error_code}</h2>
+          <p className="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">{error_name}</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{error_message}</p>
         </div>
         <div className="mt-2">
           <Link to="/"

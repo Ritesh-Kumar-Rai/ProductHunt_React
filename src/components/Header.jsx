@@ -47,7 +47,7 @@ const Header = () => {
                         <li className='font-medium cursor-pointer hover:text-amber-500'><NavLink to='/explore' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>Explore</NavLink></li>
                         <li className='font-medium cursor-pointer hover:text-amber-500'><NavLink to='/about' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>About</NavLink></li>
                         <li className='font-medium cursor-pointer hover:text-amber-500'><NavLink to='/contact' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>Contact</NavLink></li>
-                        <li className='font-medium cursor-pointer hover:text-amber-500'><NavLink to='/product' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>Product</NavLink></li>
+                        <li className='font-medium cursor-pointer hover:text-amber-500'><NavLink to='/dashboard' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>Dashboard</NavLink></li>
                     </ul>
                 </div>
 
