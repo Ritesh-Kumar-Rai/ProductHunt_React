@@ -3,7 +3,6 @@ import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/them
 //import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import Utility from '../Utils/Utility';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import useAuthManager from '../hooks/useAuthManager';
 import { useAuthContext } from '../context/AuthContext';
 
@@ -94,19 +93,12 @@ const SignIn = () => {
 
     const [loadingState, setLoadingState] = useState({ guest_loading: false, login_loading: false });
 
-    const navigate = useNavigate();
 
     // using custom hook for login and registrying users
     const { registerUser, loginUser } = useAuthManager();
 
     // consuming AuthContext Reducer values
-    const { state, dispatch } = useAuthContext();
-
-    useEffect(() => {
-        if (state?.isAuthenticated) {
-            navigate('/');
-        }
-    }, [state]);
+    const { dispatch } = useAuthContext();
 
 
     const handleLoginSubmit = async (e) => {
