@@ -13,6 +13,21 @@ const initialState = {
     user_data: null, // user info
 };
 
+
+const init = (prev_state) => {
+    const guestInfo = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_SESSIONSTORAGE_KEYNAME) || '{}');
+
+    if (guestInfo.isAuthenticated) {
+        if (guestInfo.isGuest) {
+            return { isAuthenticated: true, user_data: { ...guestInfo.userCredentials ?? null, isGuest: true } };
+        } else {
+            return { isAuthenticated: true, user_data: guestInfo.userCredentials ?? null };
+        }
+    }
+
+    return prev_state;
+};
+
 // reducer function 
 function authReducer(prev_state, action) {
     switch (action.type) {
@@ -27,7 +42,7 @@ function authReducer(prev_state, action) {
 
 // Providing the Reducer store to all components with the help of Context.Provider
 export function AuthContextProvider({ children }) {
-    const [state, dispatch] = useReducer(authReducer, initialState);
+    const [state, dispatch] = useReducer(authReducer, initialState, init);
 
     return (
         <AuthContext.Provider value={{ state, dispatch }}>

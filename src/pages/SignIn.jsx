@@ -60,7 +60,7 @@ const verifyUserCredentials = async (email, password, loginUserFn, dispatchFn) =
             dispatchFn({
                 type: 'LOGIN',
                 payload: {
-                    user: result.user,
+                    ...result.user,
                     isGuest: result.isGuest
                 }
             });
@@ -136,6 +136,11 @@ const SignIn = () => {
                 const result = registerUser({ username, email, password });
                 if (result.success) {
                     toastHandler.success("Hurray! Registration is completed😍");
+                    // reseting the input field values
+                    register_username.current.value = '';
+                    register_email.current.value = '';
+                    register_password.current.value = '';
+                    register_cpassword.current.value = '';
                 } else {
                     throw new RegisterError(result.error || 'Failed to create account! try again 🤔');
                 }

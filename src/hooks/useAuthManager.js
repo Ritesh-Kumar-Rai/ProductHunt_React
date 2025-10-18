@@ -2,7 +2,8 @@
 
 import { useCallback } from "react";
 
-const local_storage_keyname = "producthunt_auth_users";
+const local_storage_keyname = process.env.REACT_APP_LOCALSTORAGE_KEYNAME;
+const session_storage_keyname = process.env.REACT_APP_SESSIONSTORAGE_KEYNAME;
 
 const guestCredentials = {
   username: process.env.REACT_APP_GUEST_LOGIN_USERNAME,
@@ -14,7 +15,7 @@ const useAuthManager = () => {
   // 1. method which is for registering user
   const registerUser = useCallback((newUser) => {
     const users = JSON.parse(
-      sessionStorage.getItem(local_storage_keyname) || "[]"
+      localStorage.getItem(local_storage_keyname) || "[]"
     );
 
     const isExist = users.some(
@@ -26,7 +27,7 @@ const useAuthManager = () => {
 
     users.push(newUser);
 
-    sessionStorage.setItem(local_storage_keyname, JSON.stringify(users));
+    localStorage.setItem(local_storage_keyname, JSON.stringify(users));
 
     return { success: true };
   }, []);
@@ -34,7 +35,7 @@ const useAuthManager = () => {
   // 2. method for login
   const loginUser = useCallback((email, password) => {
     const users = JSON.parse(
-      sessionStorage.getItem(local_storage_keyname) || "[]"
+      localStorage.getItem(local_storage_keyname) || "[]"
     );
 
     const match = users.find(
@@ -44,13 +45,47 @@ const useAuthManager = () => {
 
     if (match) {
       // checking inside registered users arrays
-      return { success: true, user: match, isGuest: false };
+
+      const modified_user_obj_for_context_and_session = {
+        username: match?.username ?? "",
+        email: match?.email ?? "",
+      };
+
+      sessionStorage.setItem(
+        session_storage_keyname,
+        JSON.stringify({
+          isAuthenticated: true,
+          userCredentials: modified_user_obj_for_context_and_session,
+          isGuest: false,
+        })
+      );
+
+      return {
+        success: true,
+        user: modified_user_obj_for_context_and_session,
+        isGuest: false,
+      };
     } else if (
       guestCredentials.email === email &&
       guestCredentials.password === password
     ) {
       // if not then check is this user is guest or not -> if yes then login as guest else check for other constraints
-      return { success: true, user: guestCredentials.username, isGuest: true };
+      sessionStorage.setItem(
+        session_storage_keyname,
+        JSON.stringify({
+          isAuthenticated: true,
+          userCredentials: guestCredentials,
+          isGuest: true,
+        })
+      );
+      return {
+        success: true,
+        user: {
+          username: guestCredentials.username,
+          email: guestCredentials.email,
+        },
+        isGuest: true,
+      };
     } else if (guestCredentials.email !== email) {
       return { success: false, error: "Email is invalid!" };
     } else if (guestCredentials.password !== password) {
