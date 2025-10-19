@@ -138,7 +138,7 @@ const loginUser = useCallback((email, password) => {
 }, []); // rest of codes are not mentioned here, for more detailed code follow the link below
 ```
 
-See the complete implementation here: [useAuthContext.jsx](./src/context/AuthContext.jsx)
+See the complete implementation here: [useAuthContext.jsx](../src/context/AuthContext.jsx)
 
 ### 3. Protected Route Wrapper
 
