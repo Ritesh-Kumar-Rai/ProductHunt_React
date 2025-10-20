@@ -38,7 +38,7 @@ function App() {
                     <Route
                       path="/shoppingcart"
                       element={
-                        <ProtectedRoutes>
+                        <ProtectedRoutes msg_for_notify="Login required to access `Cart Page`">
                           <ShoppingCartPage />
                         </ProtectedRoutes>
                       }
