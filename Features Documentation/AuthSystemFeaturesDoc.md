@@ -190,7 +190,10 @@ sessionStorage.removeItem(process.env.REACT_APP_SESSIONSTORAGE_KEYNAME);
 - 🚀 Future Scope:
   - Integrate with Firebase or Node.js backend
   - Add JWT-based session management
-  - Add “Forgot Password” workflow
+  - Add “Forgot Password” workflow [via email]
+- 📝Todos:
+  - Improve Credentials Validation to better one.
+  - Add "Change Password" Option [without email]
 
 ---
 
@@ -209,4 +212,5 @@ sessionStorage.removeItem(process.env.REACT_APP_SESSIONSTORAGE_KEYNAME);
 **Author:** Ritesh Kumar Rai  
 **Project:** React E-Commerce (Frontend Only)  
 **Feature:** Authentication System  
-**Last Updated:** 19 October 2025
+**Created At:** 19 October 2025  
+**Last Updated:** 20 October 2025
