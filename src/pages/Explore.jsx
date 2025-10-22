@@ -1,10 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Card from '../components/Card';
 import { Flex, Button, Text, } from "@radix-ui/themes";
 import Search_Filter from '../components/Search_Filter';
 import { useProductContext } from '../context/ProductContext';
-import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
-import PriceFilter from './PriceFilter';
 
 const items_per_page = 10;
 
@@ -12,6 +10,9 @@ const Explore = () => {
 
   const { state } = useProductContext();
   const products_obj = state?.products;
+  const all_brands_list = useMemo(() => {
+    return Array.from(new Set(products_obj.products.flatMap((each_product) => (each_product?.brand) ? [each_product.brand] : [])))
+  }, [products_obj?.products]); // new Set stores unique dataset, and Array.from() converts that Set object into an Array & finally wrapping inside useMemo will prevents re-calculations of same result on every render
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
@@ -46,13 +47,12 @@ const Explore = () => {
 
   return (
     <>
-      <SEOHelmetInjector title='Explore | ProductHunt' description='Reach out to ProductHunt to explore more products.' />
-      <PriceFilter />
+      {/* <SEOHelmetInjector title='Explore | ProductHunt' description='Reach out to ProductHunt to explore more products.' /> */}
 
       <h3 className='text-3xl font-semibold mt-10'>Explore All Products</h3>
       <section className='w-full my-5 p-2'>
         {/* search & filter component will place here.. */}
-        <Search_Filter />
+        <Search_Filter all_brands_list={all_brands_list} />
         <div className='max-w-7xl w-fit m-auto flex justify-center gap-5 flex-wrap p-2'>
           {currentPageProducts?.map((item) => <Card key={item.id} item={item} />)}
         </div>
