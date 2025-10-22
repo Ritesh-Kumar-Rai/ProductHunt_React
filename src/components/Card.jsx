@@ -22,7 +22,6 @@ const Card = ({ item }) => {
 
     const [isWishlisted, setIsWishlisted] = React.useState(state.wishlist.includes(item.id) ? true : false);
 
-    console.log(state);
 
     const handleWishlistOperation = (e) => {
         e.preventDefault();
@@ -35,7 +34,6 @@ const Card = ({ item }) => {
             addToWishlist(item_id);
             setIsWishlisted(true);
         }
-        console.log(state);
     };
 
     const handleCartOperation = (e) => {
