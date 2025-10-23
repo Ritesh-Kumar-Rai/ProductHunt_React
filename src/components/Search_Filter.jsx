@@ -9,12 +9,17 @@ import StockFilter from './filters/StockFilter';
 import PriceFilter from '../pages/PriceFilter';
 import CheckboxFilter from './filters/CheckboxFilter';
 
+const minLimit = 0;
+const maxLimit = 5000;
 
 const Search_Filter = ({ all_brands_list }) => {
 
     const [categories, setCategories] = useState([]);// all list of available categories will get restored by useEffect api called
     const [selectedCategory, setSelectedCategory] = useState([]); // user selected categories for filter
     const [selectedBrand, setSelectedBrand] = useState([]); // user selected brands for filter
+    const [selectedRating, setSelectedRating] = useState('0'); // user selected rating for filter 
+    const [selectedStockAvailability, setSelectedStockAvailability] = useState(''); // user selected rating for filter
+    const [selectedRange, setSelectedRange] = useState([minLimit, maxLimit]); // user selected price range for filter
 
     useEffect(() => {
         const controller = new AbortController();
@@ -66,9 +71,9 @@ const Search_Filter = ({ all_brands_list }) => {
                                 <CheckboxFilter data_list={categories} selectedDataFilter={selectedCategory} setSelectedDataFilter={setSelectedCategory} label_name='Category' color_for_checkboxes='gray' className="py-2 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900" />
                                 {/* filter for brand names */}
                                 <CheckboxFilter data_list={all_brands_list} selectedDataFilter={selectedBrand} setSelectedDataFilter={setSelectedBrand} label_name='Brand' height={100} className='py-2' />
-                                <RatingsFilter />
-                                <StockFilter />
-                                <PriceFilter />
+                                <RatingsFilter selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
+                                <StockFilter selectedStock={selectedStockAvailability} setSelectedStock={setSelectedStockAvailability} />
+                                <PriceFilter minLimit={minLimit} maxLimit={maxLimit} selectedPriceRange={selectedRange} onChange={setSelectedRange} />
 
 
 
@@ -94,7 +99,7 @@ const Search_Filter = ({ all_brands_list }) => {
                     <Badge color='red' radius='large'><b>Color:</b> Red <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
                     <Badge color='blue' radius='large'><b>Brand:</b> Samsung <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
                     <Badge color='gold' radius='large'><b>Rating:</b> 3+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Badge color='mint' radius='large'><b>Price:</b> ₹4500+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
+                    <Badge color='mint' radius='large'><b>Price:</b> ₹4500+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' onClick={() => setSelectedRange([])} /></Badge>
                     <Badge color='grass' radius='large'><b>Stock Status:</b> InStock <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
                     <Button variant='soft' color='crimson' size='1' radius='full' style={{ cursor: 'pointer' }}> <MdFilterAltOff /> Clear All</Button>
                 </Flex>

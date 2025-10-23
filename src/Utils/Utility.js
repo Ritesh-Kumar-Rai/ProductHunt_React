@@ -73,6 +73,14 @@ class Utility {
 
     return errors;
   }
+  // debounce method
+  static debounce(fn, delay = 300) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
 }
 
 export default Utility;

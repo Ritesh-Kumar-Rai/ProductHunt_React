@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import * as Slider from "@radix-ui/react-slider";
 import { Flex, Text, Box } from "@radix-ui/themes";
+import Utility from "../Utils/Utility";
 
 // Utility function for formatting currency
 const formatPrice = (value) => `₹${value.toLocaleString("en-IN")}`;
 
-const PriceFilter = ({ minLimit = 0, maxLimit = 5000, onChange }) => {
-    const [range, setRange] = useState([minLimit, maxLimit]);
+const PriceFilter = ({ minLimit = 0, maxLimit = 5000, selectedPriceRange = [], onChange }) => {
 
-    // Whenever range changes, propagate upward
-    useEffect(() => {
-        if (onChange) onChange(range);
-    }, [range, onChange]);
+    const [range, setRange] = useState(selectedPriceRange.length ? selectedPriceRange : [minLimit, maxLimit]); // user selected price range for filter
+
 
     // Main update function with validation
     const updateRange = (newMin, newMax) => {
@@ -27,6 +25,12 @@ const PriceFilter = ({ minLimit = 0, maxLimit = 5000, onChange }) => {
         else updateRange(range[0], newValue);
     };
 
+    // Notify parent (onValueCommit or onBlur)
+    const notifyParent = useMemo(() => Utility.debounce((newRange) => {
+        if (onChange) onChange(newRange);
+        console.log(newRange)
+    }, 300), [onChange]);
+
     return (
         <Box className="w-full p-4 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900">
             <Text weight="bold" size="3" className="mb-2 block">
@@ -41,6 +45,7 @@ const PriceFilter = ({ minLimit = 0, maxLimit = 5000, onChange }) => {
                 step={50}
                 value={range}
                 onValueChange={(values) => updateRange(values[0], values[1])}
+                onValueCommit={(values) => notifyParent(values)}
             >
                 <Slider.Track className="bg-gray-300 dark:bg-gray-700 relative grow rounded-full h-[4px]">
                     <Slider.Range className="absolute bg-indigo-500 rounded-full h-full" />
@@ -66,6 +71,7 @@ const PriceFilter = ({ minLimit = 0, maxLimit = 5000, onChange }) => {
                         step={50}
                         value={range[0]}
                         onChange={(e) => handleInputChange(0, e.target.value)}
+                        onBlur={() => notifyParent(range)}
                         className="w-24 mt-1 text-sm rounded-md border border-gray-300 dark:border-gray-700 p-1 text-center bg-white dark:bg-gray-800"
                     />
                 </Box>
@@ -79,6 +85,7 @@ const PriceFilter = ({ minLimit = 0, maxLimit = 5000, onChange }) => {
                         step={50}
                         value={range[1]}
                         onChange={(e) => handleInputChange(1, e.target.value)}
+                        onBlur={() => notifyParent(range)}
                         className="w-24 mt-1 text-sm rounded-md border border-gray-300 dark:border-gray-700 p-1 text-center bg-white dark:bg-gray-800"
                     />
                 </Box>
