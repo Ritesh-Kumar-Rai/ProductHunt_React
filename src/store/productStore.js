@@ -3,17 +3,6 @@
 import product_raw_data from "../constants/products.json";
 import Utility from "../Utils/Utility";
 
-const cat = [];
-
-product_raw_data?.products?.forEach((element) => {
-  // console.log(element.category)
-  if (!cat.includes(element.category)) {
-    cat.push(element.category);
-  }
-});
-
-// console.log(cat);
-
 const INITIAL_VALUE = {
   products: product_raw_data, // an object which has {products: Array(194), total: 194, skip: 0, limit: 194}
   cart: [], // {id: Number, qty: Number}

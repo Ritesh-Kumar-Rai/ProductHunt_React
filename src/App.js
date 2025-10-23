@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from "./context/AuthContext";
 import BlockPublicRoutes from "./components/shared/BlockPublicRoutes";
 import ProtectedRoutes from "./components/shared/ProtectedRoutes";
+import { FilterContextProvider } from "./context/FilterContext";
 
 const Home = lazy(() => import("./pages/Home"));
 const Explore = lazy(() => import("./pages/Explore"));
@@ -32,7 +33,14 @@ function App() {
                 <Suspense fallback={<Loader />}>
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/explore" element={<Explore />} />
+                    <Route
+                      path="/explore"
+                      element={
+                        <FilterContextProvider>
+                          <Explore />
+                        </FilterContextProvider>
+                      }
+                    />
                     <Route path="/product/:productId" element={<Product />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route
