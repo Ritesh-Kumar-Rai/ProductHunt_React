@@ -6,7 +6,7 @@ import { MdFilterAltOff } from "react-icons/md";
 import { RiCloseCircleFill } from "react-icons/ri";
 import RatingsFilter from './filters/RatingsFilter';
 import StockFilter from './filters/StockFilter';
-import PriceFilter from '../pages/PriceFilter';
+import PriceFilter from './filters/PriceFilter';
 import CheckboxFilter from './filters/CheckboxFilter';
 
 const minLimit = 0;

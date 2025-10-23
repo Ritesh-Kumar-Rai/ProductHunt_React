@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import * as Slider from "@radix-ui/react-slider";
 import { Flex, Text, Box } from "@radix-ui/themes";
-import Utility from "../Utils/Utility";
+import Utility from "../../Utils/Utility";
 
 // Utility function for formatting currency
 const formatPrice = (value) => `₹${value.toLocaleString("en-IN")}`;
