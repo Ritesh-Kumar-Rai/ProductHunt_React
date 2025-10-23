@@ -1,5 +1,5 @@
 import { Badge, Button, Container, Dialog, Flex, IconButton, Separator, TextField, Tooltip } from '@radix-ui/themes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdFilterAltOff } from "react-icons/md";
@@ -12,30 +12,13 @@ import CheckboxFilter from './filters/CheckboxFilter';
 const minLimit = 0;
 const maxLimit = 5000;
 
-const Search_Filter = ({ all_brands_list }) => {
+const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
 
-    const [categories, setCategories] = useState([]);// all list of available categories will get restored by useEffect api called
     const [selectedCategory, setSelectedCategory] = useState([]); // user selected categories for filter
     const [selectedBrand, setSelectedBrand] = useState([]); // user selected brands for filter
     const [selectedRating, setSelectedRating] = useState('0'); // user selected rating for filter 
     const [selectedStockAvailability, setSelectedStockAvailability] = useState(''); // user selected rating for filter
     const [selectedRange, setSelectedRange] = useState([minLimit, maxLimit]); // user selected price range for filter
-
-    useEffect(() => {
-        const controller = new AbortController();
-        const url = "https://dummyjson.com/products/category-list";
-
-        fetch(url, { signal: controller?.signal })
-            .then((res) => res.json())
-            .then((res) => {
-                console.log(res);
-                setCategories(res);
-            })
-            .catch(console.error);
-
-        return () => controller.abort();
-
-    }, []);
 
     return (
         <section>
@@ -68,15 +51,12 @@ const Search_Filter = ({ all_brands_list }) => {
 
                                 {/* filter components */}
                                 {/* filter for category */}
-                                <CheckboxFilter data_list={categories} selectedDataFilter={selectedCategory} setSelectedDataFilter={setSelectedCategory} label_name='Category' color_for_checkboxes='gray' className="py-2 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900" />
+                                <CheckboxFilter data_list={categories_list} selectedDataFilter={selectedCategory} setSelectedDataFilter={setSelectedCategory} label_name='Category' color_for_checkboxes='gray' className="py-2 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900" />
                                 {/* filter for brand names */}
                                 <CheckboxFilter data_list={all_brands_list} selectedDataFilter={selectedBrand} setSelectedDataFilter={setSelectedBrand} label_name='Brand' height={100} className='py-2' />
                                 <RatingsFilter selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
                                 <StockFilter selectedStock={selectedStockAvailability} setSelectedStock={setSelectedStockAvailability} />
                                 <PriceFilter minLimit={minLimit} maxLimit={maxLimit} selectedPriceRange={selectedRange} onChange={setSelectedRange} />
-
-
-
                             </Flex>
 
                             <Flex gap="3" mt="4" justify="end">

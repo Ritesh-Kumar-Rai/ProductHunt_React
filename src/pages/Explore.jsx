@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from '../components/Card';
 import { Flex, Button, Text, } from "@radix-ui/themes";
 import Search_Filter from '../components/Search_Filter';
@@ -13,6 +13,8 @@ const Explore = () => {
   const all_brands_list = useMemo(() => {
     return Array.from(new Set(products_obj.products.flatMap((each_product) => (each_product?.brand) ? [each_product.brand] : [])))
   }, [products_obj?.products]); // new Set stores unique dataset, and Array.from() converts that Set object into an Array & finally wrapping inside useMemo will prevents re-calculations of same result on every render
+
+  const [categories, setCategories] = useState([]);// all list of available categories will get restored by useEffect api called
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
@@ -43,16 +45,47 @@ const Explore = () => {
   const currentPageProducts = products_obj?.products?.slice(startIndex, endIndex);
 
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const url = "https://dummyjson.com/products/category-list";
+
+    fetch(url, { signal: controller?.signal })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res);
+        setCategories(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        const cat = [];
+
+        products_obj?.products?.forEach((element) => {
+          // console.log(element.category)
+          if (!cat.includes(element.category)) {
+            cat.push(element.category);
+          }
+        });
+        setCategories(cat);
+        console.log(cat);
+      });
+
+    return () => controller.abort();
+  }, []);
+
+
 
 
   return (
     <>
-      {/* <SEOHelmetInjector title='Explore | ProductHunt' description='Reach out to ProductHunt to explore more products.' /> */}
-
       <h3 className='text-3xl font-semibold mt-10'>Explore All Products</h3>
       <section className='w-full my-5 p-2'>
         {/* search & filter component will place here.. */}
-        <Search_Filter all_brands_list={all_brands_list} />
+        <Search_Filter all_brands_list={all_brands_list} categories_list={categories} />
         <div className='max-w-7xl w-fit m-auto flex justify-center gap-5 flex-wrap p-2'>
           {currentPageProducts?.map((item) => <Card key={item.id} item={item} />)}
         </div>
