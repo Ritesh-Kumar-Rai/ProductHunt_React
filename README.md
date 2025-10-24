@@ -28,6 +28,10 @@ npm start
 
 Redux, RTK or Zustand is not included in this project, because i am testing how Context+Reducer extends to, and when this project actually demands for Advanced State management. Till now all are quiet done smoothly with Context & Reducer;
 
+### Todo/Issues:
+
+- In product page even the product is out of stock and total stock is zero, the user still able to add it to cart. It's a bug.
+
 ## LICENSE
 
 [MIT License](LICENSE)
