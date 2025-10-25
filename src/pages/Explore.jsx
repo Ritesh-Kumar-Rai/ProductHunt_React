@@ -88,7 +88,7 @@ const Explore = () => {
       (searchQuery && searchQuery.trim().length > 0) ||
       (category && category.length > 0) ||
       (brand && brand.length > 0) ||
-      (rating && (rating !== '' || rating !== '0')) ||
+      (rating && (rating !== '' || rating !== '0' || rating > 1)) ||
       (stockConsidered && (stockConsidered === 'in-stock' || stockConsidered === 'outoff-stock')) ||
       (priceRange && priceRange.some(p => p !== null && p !== undefined))
     );
@@ -113,7 +113,7 @@ const Explore = () => {
 
     const brandMatches = (brand.length) ? brand.includes(each_product?.brand) : true;
 
-    const ratingMatches = rating && !isNaN(rating) && parseFloat(rating) > 0 ? each_product.rating >= parseFloat(rating) : true;
+    const ratingMatches = rating && !isNaN(rating) && parseFloat(rating) > 1 ? each_product.rating >= parseFloat(rating) : true;
 
     const stockMatches = stockConsidered && (stockConsidered === 'In Stock' || stockConsidered === 'Low Stock') ? (each_product.availabilityStatus === stockConsidered) : true;
 

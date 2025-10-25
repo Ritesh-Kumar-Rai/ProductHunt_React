@@ -40,9 +40,9 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
     const onApplyFilters = () => {
         updateAppliedFilters('category', selectedCategory);
         updateAppliedFilters('brand', selectedBrand);
-        updateAppliedFilters('rating', selectedRating);
+        if (parseFloat(selectedRating) > 1) updateAppliedFilters('rating', selectedRating);
         updateAppliedFilters('stockConsidered', selectedStockAvailability);
-        updateAppliedFilters('priceRange', selectedRange);
+        if (selectedRange[0] !== minLimit && selectedRange[1] !== maxLimit) updateAppliedFilters('priceRange', selectedRange);
     };
 
     // if (!searchQuery.length) {
