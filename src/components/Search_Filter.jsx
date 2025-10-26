@@ -13,6 +13,13 @@ import { useFilterContext } from '../context/FilterContext';
 const minLimit = 0;
 const maxLimit = 5000;
 
+class SearchFilterError extends Error {
+    constructor(msg) {
+        super(msg);
+        this.name = "SearchFilterError";
+    };
+};
+
 const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
 
     const [selectedCategory, setSelectedCategory] = useState([]); // user selected categories for filter
@@ -22,7 +29,7 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
     const [selectedRange, setSelectedRange] = useState([minLimit, maxLimit]); // user selected price range for filter
 
 
-    const { setSearchQuery, updateAppliedFilters, resetFilters } = useFilterContext(); // getting values from filterContext
+    const { setSearchQuery, appliedFilters, updateAppliedFilters, resetFilters } = useFilterContext(); // getting values from filterContext
 
     const searchInput = useRef(null);
 
@@ -60,6 +67,36 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
         setSelectedRating('0');
         setSelectedStockAvailability('');
         setSelectedRange([minLimit, maxLimit]);
+    };
+
+    const onClearOne = (keyname) => {
+        try {
+            if (!keyname) throw SearchFilterError("`keyname` required before deletion of filter!");
+
+            updateAppliedFilters(keyname);;
+
+            switch (keyname) {
+                case 'category':
+                    setSelectedCategory([]);
+                    break;
+                case 'brand':
+                    setSelectedBrand([]);
+                    break;
+                case 'rating':
+                    setSelectedRating('0');
+                    break;
+                case 'stockConsidered':
+                    setSelectedStockAvailability('');
+                    break;
+                case 'priceRange':
+                    setSelectedRange([minLimit, maxLimit]);
+                    break;
+                default:
+                    throw new SearchFilterError(`None of the KeyName was matched for '${keyname}' keyname!`);
+            };
+        } catch (error) {
+            console.error(`${error.name} -> ${error.message}`);
+        }
     };
 
 
@@ -125,6 +162,13 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
                     <Badge color='mint' radius='large'><b>Price:</b> ₹4500+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' onClick={() => setSelectedRange([])} /></Badge>
                     <Badge color='grass' radius='large'><b>Stock Status:</b> InStock <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
                     <Button variant='soft' color='crimson' size='1' radius='full' onClick={onClearAll} style={{ cursor: 'pointer' }}> <MdFilterAltOff /> Clear All</Button>
+
+                    {Object?.entries(appliedFilters).map(([key, value]) => {
+                        if (value.length) {
+                            return <Badge color='indigo' radius='large'><b>{key}:</b> {value} <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer'
+                                onClick={() => onClearOne(key)} /></Badge>;
+                        }
+                    })}
                 </Flex>
             </Container>
         </section>

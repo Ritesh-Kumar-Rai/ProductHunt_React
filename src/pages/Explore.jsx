@@ -164,7 +164,7 @@ const Explore = () => {
         {/* search & filter component will place here.. */}
         <Search_Filter all_brands_list={all_brands_list} categories_list={categories} />
         <div className='max-w-7xl w-fit m-auto flex justify-center gap-5 flex-wrap p-2'>
-          {Object?.entries(appliedFilters).map((filter) => filter[1].length > 0 && <b key={filter}>{filter[0]} : {filter[1].length > 3 ? <span className='h-5 w-5 bg-slate-700 text-white rounded-sm p-1'>3+</span> : filter[1].toLocaleString()}</b>)}
+          {/* {Object?.entries(appliedFilters).map((filter) => filter[1].length > 0 && <b key={filter}>{filter[0]} : {filter[1].length > 3 ? <span className='h-5 w-5 bg-slate-700 text-white rounded-sm p-1'>3+</span> : filter[1].toLocaleString()}</b>)} */}
           <br />
           {currentPageProducts?.map((item) => <TempCard key={item.id} item={item} />)}
           {!currentPageProducts.length && <NoResults searchQuery={searchQuery} />}
