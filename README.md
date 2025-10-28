@@ -32,6 +32,8 @@ Redux, RTK or Zustand is not included in this project, because i am testing how 
 
 - In product page even the product is out of stock and total stock is zero, the user still able to add it to cart. It's a bug.
 
+- In Explore page the Search Bar doesn't have clear/remove btn or option, will see later; & un-expectedly the explore component was re-rendering for more than 7 times which is a bottleneck of performance.. will see in future too.
+
 ## LICENSE
 
 [MIT License](LICENSE)
