@@ -1,5 +1,5 @@
 import { Badge, Button, Container, Dialog, Flex, IconButton, Separator, TextField, Tooltip } from '@radix-ui/themes';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdFilterAltOff } from "react-icons/md";
@@ -18,6 +18,14 @@ class SearchFilterError extends Error {
         super(msg);
         this.name = "SearchFilterError";
     };
+};
+
+const colorsOfBadges = {
+    category: 'indigo',
+    brand: 'tomato',
+    rating: 'gold',
+    stockConsidered: 'grass',
+    priceRange: 'mint'
 };
 
 const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
@@ -47,9 +55,17 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
     const onApplyFilters = () => {
         updateAppliedFilters('category', selectedCategory);
         updateAppliedFilters('brand', selectedBrand);
-        if (parseFloat(selectedRating) > 1) updateAppliedFilters('rating', selectedRating);
+        if (selectedRating != '0') {
+            updateAppliedFilters('rating', selectedRating);
+        } else if (appliedFilters.rating != '0') {
+            updateAppliedFilters('rating');
+        }
         updateAppliedFilters('stockConsidered', selectedStockAvailability);
-        if (selectedRange[0] !== minLimit && selectedRange[1] !== maxLimit) updateAppliedFilters('priceRange', selectedRange);
+        if (selectedRange[0] !== minLimit || selectedRange[1] !== maxLimit) {
+            updateAppliedFilters('priceRange', selectedRange);
+        } else if (appliedFilters.priceRange != [minLimit, maxLimit]) {
+            updateAppliedFilters('priceRange');
+        }
     };
 
     // if (!searchQuery.length) {
@@ -98,6 +114,18 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
             console.error(`${error.name} -> ${error.message}`);
         }
     };
+
+    const hasActiveFilters = useMemo(() => {
+        return Object.entries(appliedFilters).some(([_, value]) => {
+            if (Array.isArray(value)) {
+                return value.length > 0 && value.some(v => v !== null && v !== undefined);
+            }
+            if (typeof value === 'string') {
+                return value.trim() !== '' && value !== '0';
+            }
+            return Boolean(value);
+        });
+    }, [appliedFilters]);
 
 
     return (
@@ -155,23 +183,36 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
 
                 {/* badges  */}
                 <Flex gap='2' className='mt-2' align='center' justify='end' wrap='wrap'>
-                    <Badge color='indigo' radius='large'><b>Category:</b> Electronics <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Badge color='red' radius='large'><b>Color:</b> Red <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Badge color='blue' radius='large'><b>Brand:</b> Samsung <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Badge color='gold' radius='large'><b>Rating:</b> 3+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Badge color='mint' radius='large'><b>Price:</b> ₹4500+ <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' onClick={() => setSelectedRange([])} /></Badge>
-                    <Badge color='grass' radius='large'><b>Stock Status:</b> InStock <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer' /></Badge>
-                    <Button variant='soft' color='crimson' size='1' radius='full' onClick={onClearAll} style={{ cursor: 'pointer' }}> <MdFilterAltOff /> Clear All</Button>
 
                     {Object?.entries(appliedFilters).map(([key, value]) => {
+
                         if (value.length) {
-                            return <Badge color='indigo' radius='large'><b>{key}:</b> {value} <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer'
-                                onClick={() => onClearOne(key)} /></Badge>;
+                            if (Array.isArray(value)) {
+                                const organisedValue = value.toSpliced(2).toString().replaceAll(',', ', '); // only 2 value in a string
+
+                                const visibleValues = value.slice(0, 2);
+                                const remainingCount = Math.max(0, value.length - 2);
+
+
+                                return <Badge key={key} color={colorsOfBadges[key]} radius='large'
+                                    title={key + ': ' + value.join(', ')}><b>{key}:</b>
+                                    <span className='max-w-[180px] font-medium truncate'>
+                                        {visibleValues.join(', ')}
+                                    </span>
+                                    {value.length > 2 && <span className='font-bold bg-inherit p-0.5 rounded-sm'>{remainingCount}+</span>}
+                                    <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150 shrink-0' cursor='pointer'
+                                        onClick={() => onClearOne(key)} /></Badge>;
+                            } else {
+                                return <Badge key={key} color={colorsOfBadges[key]} radius='large'><b>{key}:</b> {value} <RiCloseCircleFill className='hover:scale-150 transition-transform duration-150' cursor='pointer'
+                                    onClick={() => onClearOne(key)} /></Badge>;
+                            }
                         }
+                        return null;
                     })}
+                    {hasActiveFilters && <Button variant='soft' color='crimson' size='1' radius='full' onClick={onClearAll} style={{ cursor: 'pointer' }}> <MdFilterAltOff /> Clear All</Button>}
                 </Flex>
             </Container>
-        </section>
+        </section >
     )
 }
 
