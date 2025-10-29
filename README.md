@@ -34,6 +34,8 @@ Redux, RTK or Zustand is not included in this project, because i am testing how 
 
 - In Explore page the Search Bar doesn't have clear/remove btn or option, will see later; & un-expectedly the explore component was re-rendering for more than 7 times which is a bottleneck of performance.. will see in future too.
 
+- In Product.jsx page in reviews section nested-reviews are remained to work on it and display all of them. Will see that also in future.
+
 ## LICENSE
 
 [MIT License](LICENSE)
