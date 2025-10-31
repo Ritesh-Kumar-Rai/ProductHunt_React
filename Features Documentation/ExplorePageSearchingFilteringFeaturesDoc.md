@@ -260,6 +260,8 @@ const handlePageNavigate = (direction) => {
 
 - Add debounce for search input.
 - Implement lazy-loading for product images.
+- **URL Sync:** Sync filters with query params (?category=shoes&brand=nike) using useSearchParams or URLSearchParams. This enables sharable and bookmarkable filters.
+
 - Move sorting logic into a custom hook (`useSortProducts`).
 - Introduce server-side pagination once API supports it.
 
@@ -269,3 +271,11 @@ const handlePageNavigate = (direction) => {
 
 This design ensures a **robust**, **performant**, and **user-friendly** explore page.  
 Every hook, memoization, and fallback path is intentionally structured for predictable state management and scalable extension.
+
+---
+
+**Author:** Ritesh Kumar Rai  
+**Project:** React E-Commerce (Frontend Only)  
+**Feature:** Searching_Filtering_Sorting, Pagination Functionality in Explore page  
+**Created At:** 31 October 2025  
+**Last Updated:** 31 October 2025
