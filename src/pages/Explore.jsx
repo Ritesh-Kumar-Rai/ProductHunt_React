@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import Card from '../components/Card';
-import { Flex, Button, Text, } from "@radix-ui/themes";
+import { Flex, Button, Text } from "@radix-ui/themes";
 import Search_Filter from '../components/Search_Filter';
 import { useProductContext } from '../context/ProductContext';
 import { useFilterContext } from '../context/FilterContext';
 import { FcSearch } from 'react-icons/fc';
+import SortSelect from '../components/filters/SortSelect';
 
 const items_per_page = 10;
-let c = 1;
 
 const Explore = () => {
 
@@ -20,6 +20,8 @@ const Explore = () => {
   const [categories, setCategories] = useState([]);// all list of available categories will get restored by useEffect api called
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+  const [sortSelect, setSortSelect] = useState('relevance');
 
 
   const handlePageNavigate = (direction = 'next') => {
@@ -82,8 +84,6 @@ const Explore = () => {
 
     const { category, brand, rating, stockConsidered, priceRange } = appliedFilters || {};
 
-    setCurrentPageIndex(0); // reset current page to default 0 
-
     return (
       (searchQuery && searchQuery.trim().length > 0) ||
       (category && category.length > 0) ||
@@ -96,52 +96,71 @@ const Explore = () => {
 
   }, [searchQuery, appliedFilters]);
 
-  const filteredProducts = products_obj?.products?.filter((each_product) => {
+  const filteredProducts = useMemo(() => {
+    return products_obj?.products?.filter((each_product) => {
 
-    if (!products_obj?.products?.length) return [];
+      if (!products_obj?.products?.length) return [];
 
-    if (!hasAppliedFilters) {
-      // no filters -> return all list
-      return products_obj?.products;
-    }
+      if (!hasAppliedFilters) {
+        // no filters -> return all list
+        return products_obj?.products;
+      }
 
-    const { category, brand, rating, stockConsidered, priceRange } = appliedFilters;
+      const { category, brand, rating, stockConsidered, priceRange } = appliedFilters;
 
-    const isSearchMatched = (searchQuery.length) ? each_product.title.toLowerCase().includes(searchQuery?.trim()?.toLowerCase()) : true;
+      const isSearchMatched = (searchQuery.length) ? each_product.title.toLowerCase().includes(searchQuery?.trim()?.toLowerCase()) : true;
 
-    const categoryMatches = (category.length) ? category.includes(each_product?.category) : true;
+      const categoryMatches = (category.length) ? category.includes(each_product?.category) : true;
 
-    const brandMatches = (brand.length) ? brand.includes(each_product?.brand) : true;
+      const brandMatches = (brand.length) ? brand.includes(each_product?.brand) : true;
 
-    const ratingMatches = rating && !isNaN(rating) && parseFloat(rating) > 1 ? each_product.rating >= parseFloat(rating) : true;
+      const ratingMatches = rating && !isNaN(rating) && parseFloat(rating) > 1 ? each_product.rating >= parseFloat(rating) : true;
 
-    const stockMatches = stockConsidered && (stockConsidered === 'In Stock' || stockConsidered === 'Low Stock') ? (each_product.availabilityStatus === stockConsidered) : true;
+      const stockMatches = stockConsidered && (stockConsidered === 'In Stock' || stockConsidered === 'Low Stock') ? (each_product.availabilityStatus === stockConsidered) : true;
 
-    const priceMatches = priceRange.length === 2 ? each_product.price >= priceRange[0] && each_product.price <= priceRange[1] : true;
+      const priceMatches = priceRange.length === 2 ? each_product.price >= priceRange[0] && each_product.price <= priceRange[1] : true;
 
 
-    return (isSearchMatched && categoryMatches && brandMatches && ratingMatches && stockMatches && priceMatches);
-  });
+      return (isSearchMatched && categoryMatches && brandMatches && ratingMatches && stockMatches && priceMatches);
+    });
+  }, [products_obj?.products, searchQuery, appliedFilters]);
 
   console.log(filteredProducts);
 
-  setTimeout(() => {
-    const stockDetails = [];
-    products_obj.products.forEach((p) => {
-      if (!stockDetails.includes(p.availabilityStatus)) {
-        stockDetails.push(p.availabilityStatus);
-      }
-    });
+  // sorting algos
+  const sortedProducts = useMemo(() => {
+    if (!filteredProducts?.length) return [];
 
-    console.log(stockDetails, stockDetails.length);
-  }, 7000);
+    const sorted = [...filteredProducts]; // creates shallow copy, avoids mutating original
+
+    try {
+      switch (sortSelect) {
+        case 'price-asc': sorted.sort((a, b) => a.price - b.price); break;
+        case 'price-desc': sorted.sort((a, b) => b.price - a.price); break;
+        case 'rating-desc': sorted.sort((a, b) => b?.rating - a?.rating); break;
+        case 'title-asc': sorted.sort((a, b) => a?.title?.localeCompare(b?.title)); break;
+        case 'title-desc': sorted.sort((a, b) => b?.title?.localeCompare(a?.title)); break;
+        case 'discount-desc': sorted.sort((a, b) => b?.discountPercentage - a?.discountPercentage); break;
+        default:
+          // "relevance" – don't change order
+          return filteredProducts;
+      }
+
+      return sorted;
+
+    } catch (error) {
+      console.error(`Error Came from sortedProducts ->  ${error.name} :- ${error.message}`);
+    }
+
+  }, [sortSelect, filteredProducts]);
+
 
   // const totalPages = Math.ceil(products_obj?.total / items_per_page);
-  const totalPages = Math.ceil(filteredProducts.length / items_per_page);
+  const totalPages = Math.ceil(sortedProducts.length / items_per_page);
 
   const startIndex = currentPageIndex * items_per_page; // startIndex means how many products to skip
   const endIndex = startIndex + items_per_page; // what's the last product
-  const currentPageProducts = filteredProducts?.slice(startIndex, endIndex);
+  const currentPageProducts = sortedProducts?.slice(startIndex, endIndex);
 
   /* [Here logic of pagination means: If i am at page 2 where only 10 items per page to display then how many items to skip by which the next 10 items will be displayed in a page 2; and till how many items to show;
   
@@ -154,8 +173,11 @@ const Explore = () => {
   ]
 */
 
-  c++;
-  console.warn(c);
+
+  // For page updation (reset)
+  useEffect(() => {
+    setCurrentPageIndex(0); // reset current page to default 0 
+  }, [hasAppliedFilters, sortedProducts]);
 
   return (
     <>
@@ -163,10 +185,13 @@ const Explore = () => {
       <section className='w-full my-5 p-2'>
         {/* search & filter component will place here.. */}
         <Search_Filter all_brands_list={all_brands_list} categories_list={categories} />
+        <div className='flex items-center justify-end gap-2 mb-2'>
+          <b>Sort by:</b>
+          <SortSelect sortOption={sortSelect} setSortOption={setSortSelect} />
+
+        </div>
         <div className='max-w-7xl w-fit m-auto flex justify-center gap-5 flex-wrap p-2'>
-          {/* {Object?.entries(appliedFilters).map((filter) => filter[1].length > 0 && <b key={filter}>{filter[0]} : {filter[1].length > 3 ? <span className='h-5 w-5 bg-slate-700 text-white rounded-sm p-1'>3+</span> : filter[1].toLocaleString()}</b>)} */}
-          <br />
-          {currentPageProducts?.map((item) => <TempCard key={item.id} item={item} />)}
+          {currentPageProducts?.map((item) => <Card key={item.id} item={item} />)}
           {!currentPageProducts.length && <NoResults searchQuery={searchQuery} />}
         </div>
         <div className='mt-4 flex items-center justify-center'>
@@ -192,6 +217,7 @@ const TempCard = ({ item }) => {
     <b className={`${item.availabilityStatus === 'In Stock' ? 'text-green-700' : item.availabilityStatus === 'Low Stock' ? 'text-orange-800' : ''}`}>Stock: {item.availabilityStatus}</b>
     <b>Rating: {item.rating}</b>
     <b>Brand: {item.brand ?? 'Empty'}</b>
+    <b className='text-amber-600'>Discount: {item.discountPercentage ?? 'No discount'}</b>
   </div>);
 };
 
