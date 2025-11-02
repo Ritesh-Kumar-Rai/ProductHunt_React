@@ -5,6 +5,8 @@ import RelatedProductCard from '../components/RelatedProductCard';
 import { useProductContext } from '../context/ProductContext';
 import Utility from '../Utils/Utility';
 import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
+import CheckoutModal from '../components/CheckoutModal';
+import CheckoutModal2 from '../components/CheckoutModal2';
 
 const ShoppingCartPage = () => {
 
@@ -73,15 +75,6 @@ const ShoppingCartPage = () => {
                 Your Cart is Empty!
                 <Link to='/explore' className='mt-2 font-medium text-blue-700 underline hover:no-underline dark:text-blue-500'>Explore Products</Link>
               </div>)}
-              {/* 
-         <SelectedItemCard image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg' image_label='imac image' product_name='PC system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD 256GB, 10-core GPU, Keyboard layout INT' price='1,499' qty={2} />
-
-         <SelectedItemCard image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/apple-watch-light.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/apple-watch-dark.svg' image_label='apple watch image' product_name='Restored Apple Watch Series 8 (GPS) 41mm Midnight Aluminum Case with Midnight Sport Band' price={598} qty={1} />
-
-        <SelectedItemCard image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/macbook-pro-light.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/macbook-pro-dark.svg' image_label='macbook pro image' product_name='Apple - MacBook Pro 16" Laptop, M3 Pro chip, 36GB Memory, 18-core GPU, 512GB SSD, Space Black' price='1,799' qty={1} />
-       
-        <SelectedItemCard image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-light.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-dark.svg' image_label='ipad image' product_name='Tablet APPLE iPad Pro 12.9" 6th Gen, 128GB, Wi-Fi, Gold' price={699} qty={1} />
-        <SelectedItemCard image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/iphone-light.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/iphone-dark.svg' image_label='iphone image' product_name='APPLE iPhone 15 5G phone, 256GB, Gold' price='2,997' qty={3} /> */}
 
             </div>
             {/* <div className="hidden xl:mt-8 xl:block">
@@ -135,8 +128,9 @@ const ShoppingCartPage = () => {
                   <dd className="text-base font-bold text-gray-900 dark:text-white"><b>₹</b>{cartSummary?.total || 0}</dd>
                 </dl>
               </div>
-
-              <a href="#" className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Proceed to Checkout</a>
+              {/* Here the Proceed to checkout button was moved to CheckoutModal as a trigger for modal */}
+              {/* <CheckoutModal /> */}
+              <CheckoutModal2 cartItems={cart_products} />
 
               <div className="flex items-center justify-center gap-2">
                 <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
@@ -155,7 +149,7 @@ const ShoppingCartPage = () => {
                   <label for="voucher" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Do you have a voucher or gift card? </label>
                   <input type="text" id="voucher" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="" required />
                 </div>
-                <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apply Code</button>
+                <button type="submit" title='apply code button' className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apply Code</button>
               </form>
             </div>
           </div>
