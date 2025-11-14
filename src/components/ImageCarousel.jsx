@@ -16,6 +16,13 @@ const ImageCarousel = ({ images = [] }) => {
     );
   };
 
+  // will trigger when image failed to load
+  const handleImgError = (event) => {
+    event.target.src = fallback_image;
+    event.target.style.objectFit = 'cover';
+  };
+
+
   return (
     <>
       <div className="w-full h-full flex items-center justify-center font-medium text-xl">
@@ -23,7 +30,8 @@ const ImageCarousel = ({ images = [] }) => {
         {
           images.length === 0 ? 'Loading...' :
             <img
-              src={images.length === 0 ? fallback_image : images[currentIndex]}
+              src={images[currentIndex] || fallback_image}
+              onError={handleImgError}
               alt={`Slide ${currentIndex + 1}`}
               className=" object-contain transition-all duration-200 w-full h-full"
             />
@@ -32,7 +40,7 @@ const ImageCarousel = ({ images = [] }) => {
       <button
         onClick={prevSlide}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
-        disabled={images.length === 0 ? true : false}
+        disabled={images.length === 0}
         style={{ display: images.length <= 1 ? 'none' : 'block' }}
       >
         &#8592;
@@ -40,15 +48,15 @@ const ImageCarousel = ({ images = [] }) => {
       <button
         onClick={nextSlide}
         className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
-        disabled={images.length === 0 ? true : false}
+        disabled={images.length === 0}
         style={{ display: images.length <= 1 ? 'none' : 'block' }}
       >
         &#8594;
       </button>
       <div className="absolute bottom-1 flex items-center gap-5 w-[90%] m-auto overflow-x-scroll p-2">
         {images.map((img, i) => (
-          <div className={`border-2 rounded-md w-28 md:w-40 h-12 backdrop-blur-md cursor-pointer shadow-lg ${currentIndex === i ? 'border-amber-600' : 'border-gray-600'}`} onClick={() => setCurrentIndex(i)}>
-            <img src={img} alt="image" className="w-full h-full object-contain" />
+          <div key={i} className={`border-2 rounded-md w-28 md:w-40 h-12 backdrop-blur-md cursor-pointer shadow-lg ${currentIndex === i ? 'border-amber-600' : 'border-gray-600'}`} onClick={() => setCurrentIndex(i)}>
+            <img src={img} onError={handleImgError} alt="image" className="w-full h-full object-contain" />
           </div>
         ))}
       </div>
