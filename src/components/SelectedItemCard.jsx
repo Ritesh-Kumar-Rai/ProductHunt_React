@@ -6,7 +6,10 @@ import { useEffect, useState } from "react";
 import Utility from "../Utils/Utility";
 import { Link } from "react-router-dom";
 
-const SelectedItemCard = ({ product_id, image_url = '', darkmode_image_url = '', image_label = 'unknown image', product_name = 'unknown product', price = 0, discount = 0, isCartPage = true, is_in_Cart = false, removeFromCart, is_wishlisted = false, wishlist_products = [] }) => {
+import imac_front_fallback_img from '../assets/product_images/imac-front.svg';
+import imac_front_dark_fallback_img from '../assets/product_images/imac-front-dark.svg';
+
+const SelectedItemCard = ({ product_id, image_url = imac_front_fallback_img, darkmode_image_url = imac_front_dark_fallback_img, image_label = 'unknown image', product_name = 'unknown product', price = 0, discount = 0, isCartPage = true, is_in_Cart = false, removeFromCart, is_wishlisted = false, wishlist_products = [] }) => {
 
   const discounted_price = price - (((discount / 100) * price)) || 0;
 
@@ -98,7 +101,10 @@ const SelectedItemCard = ({ product_id, image_url = '', darkmode_image_url = '',
     }
   }, [qty]);
 
-  console.warn(qty)
+  // will trigger when image failed to load
+  const handleImgError = (event, mode = 'dark') => {
+    event.target.src = (mode === 'dark') ? imac_front_dark_fallback_img : imac_front_fallback_img;
+  };
 
 
   return (
@@ -108,8 +114,8 @@ const SelectedItemCard = ({ product_id, image_url = '', darkmode_image_url = '',
       {/* discount div end*/}
       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
         <a href="#" className="shrink-0 md:order-1">
-          <img className="h-20 w-20 dark:hidden" src={image_url} alt={image_label} />
-          <img className="hidden h-20 w-20 dark:block" src={darkmode_image_url} alt={image_label} />
+          <img className="h-20 w-20 dark:hidden" src={image_url} alt={image_label} onError={(e) => handleImgError(e, 'light')} />
+          <img className="hidden h-20 w-20 dark:block" src={darkmode_image_url} alt={image_label} onError={handleImgError} />
         </a>
 
         <label for="counter-input" className="sr-only">Choose quantity:</label>

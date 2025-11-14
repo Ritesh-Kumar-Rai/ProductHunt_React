@@ -24,7 +24,7 @@ const WishlistPage = () => {
               {state?.products?.products?.map((product) => {
                 if (wishlist_products.includes(product.id)) {
                   const isInCart = Utility.isAvailableInCart(cart_products, product.id) || false;
-                  return (<SelectedItemCard key={product.id} product_id={product.id} image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg' darkmode_image_url='https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg' image_label={product?.title} product_name={product?.title} price={product?.price} discount={product?.discountPercentage} qty={2} isCartPage={false} removeFromCart={removeFromCart} is_in_Cart={isInCart} wishlist_products={wishlist_products} />);
+                  return (<SelectedItemCard key={product.id} product_id={product.id} image_url={product?.thumbnail} darkmode_image_url={product?.thumbnail} image_label={product?.title} product_name={product?.title} price={product?.price} discount={product?.discountPercentage} qty={2} isCartPage={false} removeFromCart={removeFromCart} is_in_Cart={isInCart} wishlist_products={wishlist_products} />);
                 }
               })}
 

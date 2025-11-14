@@ -9,13 +9,14 @@ const AvatarDropDownMenu = ({ userInfo }) => {
     const { dispatch } = useAuthContext();
 
     const onLogout = () => {
-        toast.error(`Oh No '${userInfo?.user_data?.username}' you are loggedOut😶`);
+        toast.error(`You’ve been logged out, '${userInfo?.user_data?.username}'😶`);
         dispatch({
             type: 'LOGOUT'
         });
 
         sessionStorage.removeItem(process.env.REACT_APP_SESSIONSTORAGE_KEYNAME);
     };
+
 
     return (
         <DropdownMenu.Root>
