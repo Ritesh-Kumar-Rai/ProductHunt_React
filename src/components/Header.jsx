@@ -14,15 +14,16 @@ import { useAuthContext } from '../context/AuthContext';
 
 const ThemeToggleButton = () => {
 
-    const [theme, setTheme] = React.useState(false);
+    const [theme, setTheme] = React.useState(() => sessionStorage.getItem('theme') === 'dark');
 
     React.useEffect(() => {
         document.documentElement.setAttribute('class', theme ? 'dark' : 'light');
+        sessionStorage.setItem('theme', theme ? 'dark' : 'light');
     }, [theme]);
 
     return (
         <label className="inline-flex items-center cursor-pointer">
-            <input type="checkbox" value={theme} className="sr-only peer" onChange={(e) => setTheme(prev => !prev)} />
+            <input type="checkbox" checked={theme} className="sr-only peer" onChange={(e) => setTheme(prev => !prev)} />
             <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
             <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{!theme ? <BiSun size={20} /> : <BiMoon size={20} />}</span>
         </label>);
@@ -35,15 +36,40 @@ const Header = () => {
     const { state } = useProductContext(); // from ProductContext.jsx
     const { state: user_auth_state } = useAuthContext();
 
+    const navRef = React.useRef(null);
+    const toggleBtnRef = React.useRef(null);
+    /*
+        React.useEffect(() => {
+            const handler = (e) => {
+                // if navbar is closed, do nothing
+                if (!navOpened) return;
+    
+                // if click inside navbar → do nothing
+                if (navRef.current && navRef.current.contains(e.target)) return;
+    
+                // if click on toggle button → do nothing (its own handler will toggle)
+                if (toggleBtnRef.current && toggleBtnRef.current.contains(e.target)) return;
+    
+                // otherwise close nav
+                setTimeout(() => {
+                    setNavOpened(false);
+                }, 3000);
+            };
+    
+            document.addEventListener("click", handler);
+            return () => document.removeEventListener("click", handler);
+        }, [navOpened]);*/
+
+
 
     return (
-        <header className='h-15 w-full sticky top-0 p-2 z-50 flex gap-2 md:gap-4 justify-between items-center'>
+        <header className='h-16 w-full sticky top-0 p-2 z-50 flex gap-2 md:gap-4 justify-between items-center'>
             <div className="logo font-extrabold text-amber-500 w-fit">
                 <Link to='/'>
-                    <img width="150px" className='product-hunt-icon' src={company_logo} alt="company logo" title='product hunt logo' />
+                    <img width="150px" className='product-hunt-icon' loading='lazy' src={company_logo} alt="company logo" title='product hunt logo' />
                 </Link>
             </div>
-            <nav className={`absolute top-full bg-gray-100 h-screen ${navOpened ? 'left-0' : 'left-[-110%]'} lg:static lg:h-auto flex items-center min-w-fit w-auto gap-10 md:gap-20 lg:gap-56 lg:justify-between flex-col lg:flex-row transition-all duration-300`}>
+            <nav ref={navRef} className={`absolute top-full bg-gray-100 h-screen ${navOpened ? 'left-0' : 'left-[-110%]'} lg:static lg:h-auto flex items-center min-w-fit w-auto gap-10 md:gap-20 lg:gap-56 lg:justify-between flex-col lg:flex-row transition-all duration-300`}>
                 <div className='py-4 lg:py-0'>
                     <ul className='flex items-center gap-5 flex-col lg:flex-row'>
                         <li className='font-medium cursor-pointer '><NavLink to='/' className={({ isActive }) => (isActive ? 'text-red-600' : 'hover:text-amber-500')}>Home</NavLink></li>
@@ -58,12 +84,12 @@ const Header = () => {
                     {!user_auth_state?.isAuthenticated ? <Link type='button' to='/signin' className='px-4 py-1 bg-white dark:bg-gray-600 rounded-md border-2 border-transparent hover:border-gray-400'>Sign In</Link>
                         : <AvatarDropDownMenu userInfo={user_auth_state} />}
                     <Link type='button' to='/wishlist' className='w-fit h-fit py-1 px-2 bg-white dark:bg-gray-600 rounded-md border-2 border-transparent hover:border-gray-400'><FaRegHeart /></Link>
-                    <Link type='button' to='/shoppingcart' className='w-fit py-1 pl-4 pr-1 bg-white dark:bg-gray-600 rounded-md flex items-center gap-2  border-2 border-transparent hover:border-gray-400'><FaCartShopping /> Cart <span className='min-w-5 h-5 px-1 bg-black text-xs text-orange-600 rounded-md flex items-center justify-center'>{Utility.findLengthOfCart(state.cart)}</span></Link>
+                    <Link type='button' to='/shoppingcart' className='w-fit py-1 pl-4 pr-1 bg-white dark:bg-gray-600 rounded-md flex items-center gap-2  border-2 border-transparent hover:border-gray-400'><FaCartShopping /> Cart <span className='min-w-5 h-5 px-1 bg-black text-xs text-orange-600 rounded-md flex items-center justify-center'>{Utility.findLengthOfCart(state?.cart)}</span></Link>
                 </div>
             </nav>
             <div className='flex gap-3 md:gap-5 items-center'>
                 <ThemeToggleButton />
-                <button type='button' className='block lg:hidden' onClick={() => setNavOpened(p => !p)} >{navOpened ? <IoClose size={20} /> : <RiMenu3Fill size={20} />}</button>
+                <button type='button' ref={toggleBtnRef} className='block lg:hidden' onClick={() => setNavOpened(p => !p)} >{navOpened ? <IoClose size={25} /> : <RiMenu3Fill size={25} />}</button>
             </div>
         </header>
     )
