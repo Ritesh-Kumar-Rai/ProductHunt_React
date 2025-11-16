@@ -1,19 +1,47 @@
-# 🚀ProductHunt - A E-commerce frontend only Project
+# 🚀ProductHunt - E-commerce frontend only Project
 
-## About:
+🔗 [Live Demo](https://your-app.vercel.app)  
+📦 Frontend-only simulation of a scalable e-commerce platform.
+
+## About
 
 The ProductHunt is an e-commerce frontend webapp, build using React, Tailwind CSS, RadixUI, React Router. Powered by Context API & Reducer for Strong State Management.
 
-## First download the node modules by:
+## ✨ Features
 
-```cmd
+- Browse products with category and various filters & search
+- Add/remove items from cart or wishlist with dynamic quantity management
+- Responsive design for mobile and desktop
+- Context API + Reducer for state management
+- Used API for Dynamic Products fetching & Simulated product data via `products.json`
+- Frontend level Complete Authentication System
+- Light/Dark Theme Mode
+
+## ⚙️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Ritesh-Kumar-Rai/ProductHunt_React.git
+cd producthunt
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
 ```
 
-## Then run the project
+### 3. Then run the project
 
 ```cmd
 npm start
+```
+
+### 4. Build for production
+
+```cmd
+npm run build
 ```
 
 ## 🚀 Tech Stack Used
@@ -28,6 +56,58 @@ npm start
 
 Redux, RTK or Zustand is not included in this project, because i am testing how Context+Reducer extends to, and when this project actually demands for Advanced State management. Till now all are quiet done smoothly with Context & Reducer;
 
+## 📂 Project Structure
+
+```js
+producthunt/
+└── src/
+    ├── assets/                 # Static assets (images, icons, styles)
+    ├── components/             # Reusable UI components
+    │   ├── filters/            # Filtering & searching feature components
+    │   └── shared/             # Shared components (Error404Page, ErrorBoundary, route guards)
+    │   └── ...                 # Other UI components
+    ├── constants/              # Static data/constants
+    │   └── products.json       # Product data (bandwidth optimization)
+    ├── context/                # Global state management (Context + Reducer)
+    │   ├── AuthContext.jsx     # Authentication state
+    │   ├── FilterContext.jsx   # Filtering state
+    │   └── ProductContext.jsx  # Product/cart/wishlist state
+    ├── hooks/                  # Custom React hooks
+    │   └── useAuthManager.js   # Authentication logic hook
+    ├── pages/                  # Page-level views
+    │   ├── ContactPage.jsx
+    │   ├── Explore.jsx
+    │   ├── Home.jsx
+    │   ├── Product.jsx
+    │   ├── ShoppingCartPage.jsx
+    │   ├── Signin.jsx
+    │   └── WishlistPage.jsx
+    ├── store/                  # Reducer-based store
+    │   └── productStore.js
+    └── utils/                  # Utility functions/classes
+        └── Utility.js
+```
+
+## 📊 Data Flow Diagram (DFD)
+
+```mermaid
+flowchart TD
+    A[User Visit Website] --> B[Explore Page]
+    B --> C[Add to Cart/Wishlist]
+    C --> D[Cart Page]
+    D --> E[Sign In]
+    E --> F[Checkout Modal]
+    F --> G[Order Placed]
+    G --> H[Download Invoice]
+    H --> I[Track Order]
+
+    B --> J[Product Details Page]
+    J --> K[Add to Cart]
+    K --> L[Adjust Quantity]
+    L --> F[Checkout Modal]
+    F --> G[Order Placed]
+```
+
 ### Todo/Issues:
 
 - In product page even the product is out of stock and total stock is zero, the user still able to add it to cart. It's a bug.
@@ -36,10 +116,21 @@ Redux, RTK or Zustand is not included in this project, because i am testing how 
 
 - In Product.jsx page in reviews section nested-reviews are remained to work on it and display all of them. Will see that also in future.
 
+## 📑 Features Documentation
+
+Additional case studies and detailed explanations for:
+
+- Authentication System
+- Searching, Filtering & Sorting
+
+These can be found in the `Features Documentation` folder in the root repo.
+
 ## LICENSE
 
 [MIT License](LICENSE)
 
-## Author
+## 👨‍💻 Author
 
 - **Ritesh Kumar Rai**
+- [LinkedIn](https://in.linkedin.com/in/ritesh-kumar-rai-bb6901296)
+- [GitHub](https://github.com/Ritesh-Kumar-Rai)
