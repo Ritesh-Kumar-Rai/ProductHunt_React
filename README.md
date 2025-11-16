@@ -61,39 +61,39 @@ Redux, RTK or Zustand is not included in this project, because i am testing how 
 
 ### Homepage
 
-<img src="./docs/screenshots/producthunt-homepage.png" alt="Homepage" width="700"/>
+<img src="./docs/screenshots/producthunt-homepage.png" alt="Homepage" width="700" loading="lazy"/>
 
 ### Explore Page
 
-<img src="./docs/screenshots/producthunt-explorepage.png" alt="Explore Page" width="700"/>
+<img src="./docs/screenshots/producthunt-explorepage.png" alt="Explore Page" width="700" loading="lazy"/>
 
 ### Explore Page Searching & Filtering result
 
-<img src="./docs/screenshots/producthunt-explorepage-filtering.png" alt="Explore Page Searching&Filtering Result" width="700" />
+<img src="./docs/screenshots/producthunt-explorepage-filtering.png" alt="Explore Page Searching&Filtering Result" width="700" loading="lazy"/>
 
 ### Explore Page Error Handling
 
-<img src="./docs/screenshots/producthunt-explorepage-filtering&searching-errorhandling.png" alt="Explore Page Error Handling" width="700" />
+<img src="./docs/screenshots/producthunt-explorepage-filtering&searching-errorhandling.png" alt="Explore Page Error Handling" width="700" loading="lazy"/>
 
 ### Products Details Page
 
-<img src="./docs/screenshots/producthunt-productdetailspage.png" alt="Products Details Page" width="700"/>
+<img src="./docs/screenshots/producthunt-productdetailspage.png" alt="Products Details Page" width="700" loading="lazy"/>
 
 ### Authentication Page
 
-<img src="./docs/screenshots/producthunt-authpage.png" alt="Authentication Page" width="700"/>
+<img src="./docs/screenshots/producthunt-authpage.png" alt="Authentication Page" width="700" loading="lazy"/>
 
 ### Cart Page
 
-<img src="./docs/screenshots/producthunt-cartpage.png" alt="Cart Page" width="700"/>
+<img src="./docs/screenshots/producthunt-cartpage.png" alt="Cart Page" width="700" loading="lazy"/>
 
 ### Wishlist Page
 
-<img src="./docs/screenshots/producthunt-wishlistpage.png" alt="Wishlist Page" width="700"/>
+<img src="./docs/screenshots/producthunt-wishlistpage.png" alt="Wishlist Page" width="700" loading="lazy"/>
 
-### 404 Page Not Found Page
+### 404 Not Found Page
 
-<img src="./docs/screenshots/producthunt-404page.png" alt="404 Page Not Found Page" width="700"/>
+<img src="./docs/screenshots/producthunt-404page.png" alt="404 Page Not Found Page" width="700" loading="lazy"/>
 
 #### Demo video
 
