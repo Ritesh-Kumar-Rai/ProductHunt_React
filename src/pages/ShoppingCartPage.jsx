@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom';
 import SelectedItemCard from '../components/SelectedItemCard';
-import RelatedProductCard from '../components/RelatedProductCard';
+// import RelatedProductCard from '../components/RelatedProductCard';
 import { useProductContext } from '../context/ProductContext';
 import Utility from '../Utils/Utility';
-import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
-import CheckoutModal from '../components/CheckoutModal';
+// import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import CheckoutModal2 from '../components/CheckoutModal2';
 
 const ShoppingCartPage = () => {
@@ -56,7 +55,7 @@ const ShoppingCartPage = () => {
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
 
-      <SEOHelmetInjector title='Shopping Cart | ProductHunt' description='Purchase your selected products from this shopping cart' />
+      {/* <SEOHelmetInjector title='Shopping Cart | ProductHunt' description='Purchase your selected products from this shopping cart' /> */}
 
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Shopping Cart</h2>
