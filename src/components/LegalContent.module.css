@@ -1,0 +1,16 @@
+.legalContenth4 {
+  font-size: medium;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.legalContentp {
+  font-size: smaller;
+}
+
+.legalContentul {
+  list-style: disc;
+  margin: auto;
+  padding-left: 1rem;
+  font-size: smaller;
+}
