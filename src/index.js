@@ -1,18 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import "@radix-ui/themes/styles.css"; // importing styles from radix/uitheme
 import { Theme } from "@radix-ui/themes";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
-// import "bootstrap/dist/css/bootstrap.min.css"; // importing bootstrap css style
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Theme>
       <App />
+      <SpeedInsights />
+      <Analytics />
     </Theme>
   </React.StrictMode>
 );
