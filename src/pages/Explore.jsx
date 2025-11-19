@@ -181,11 +181,11 @@ const Explore = () => {
 
   return (
     <>
-      <h3 className='text-3xl font-semibold mt-10'>Explore All Products</h3>
-      <section className='w-full my-5 p-2'>
+      <section className='w-full my-5 p-2 max-w-7xl mx-auto'>
+        <h3 className='text-3xl font-semibold my-10'>Explore All Products</h3>
         {/* search & filter component will place here.. */}
         <Search_Filter all_brands_list={all_brands_list} categories_list={categories} />
-        <div className='flex items-center justify-end gap-2 mb-2'>
+        <div className='flex items-center justify-end gap-2 mb-4'>
           <b>Sort by:</b>
           <SortSelect sortOption={sortSelect} setSortOption={setSortSelect} />
 

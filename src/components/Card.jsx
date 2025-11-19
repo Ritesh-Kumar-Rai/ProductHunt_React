@@ -57,7 +57,7 @@ const Card = ({ item }) => {
         <div className='relative w-full h-32 overflow-hidden rounded-md group flex items-center justify-center'>
             <img src={isImageError ? (placeholder_image) : item?.thumbnail} alt="image is unable to load" onError={handleImgError} className='w-full h-full object-cover outline-none border-none transition-transform duration-200 transform scale-100 group-hover:scale-150' />
             <span className='absolute top-1 left-1 px-1 py-0.5 border-none outline-none shadow-md w-fit h-fit rounded-md bg-green-600 text-white text-xs font-medium'>-{item?.discountPercentage || null}%</span>
-            <button type='button' className='absolute top-1 right-1 w-fit h-1/5 py-0.5 px-1 rounded-full bg-white active:scale-90 transition-transform duration-200' onClick={handleWishlistOperation}>{isWishlisted ? <RiPokerHeartsFill fill='crimson' /> : <RiPokerHeartsLine fill='black' />}</button>
+            <button type='button' aria-label="add to wishlist button" title="add to wishlist" className='absolute top-1 right-1 w-fit h-1/5 py-0.5 px-1 rounded-full bg-white active:scale-90 transition-transform duration-200' onClick={handleWishlistOperation}>{isWishlisted ? <RiPokerHeartsFill fill='crimson' /> : <RiPokerHeartsLine fill='black' />}</button>
         </div>
         <div>
             <h5 className='font-semibold w-full overflow-hidden text-ellipsis text-nowrap'>{item?.title || "Product Name!"}</h5>

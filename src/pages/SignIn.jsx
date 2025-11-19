@@ -173,12 +173,12 @@ const SignIn = () => {
 
 
     return (
-        // <section className='w-full m-auto flex items-center justify-center'>
-        <section id='sign-container' className='min-h-[500px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg shadow-lg p-2 flex items-center justify-center'>
+        // bg-gradient-to-r from-blue-300 to-blue-500
+        <section id='sign-container' className='min-h-screen w-full rounded-lg p-2 flex items-center justify-center'>
 
             {/* <SEOHelmetInjector title='SignIn | ProductHunt' description='Login to our ProductHunt to Buy for favourite products today' /> */}
 
-            <div className='w-96 m-auto rounded-lg shadow-lg bg-white dark:bg-zinc-950 py-1 px-2'>
+            <div className='w-96 m-auto rounded-lg shadow-lg bg-white dark:bg-zinc-950 dark:shadow-black border-2 border-gray-100 dark:border-zinc-800 py-1 px-2'>
                 <Tabs.Root defaultValue="login" mt='2'>
                     <Tabs.List>
                         <Tabs.Trigger value="login">Login</Tabs.Trigger>

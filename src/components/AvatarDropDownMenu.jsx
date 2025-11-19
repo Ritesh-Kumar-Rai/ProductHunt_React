@@ -21,7 +21,7 @@ const AvatarDropDownMenu = ({ userInfo }) => {
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
-                <Avatar src="https://avatar.iran.liara.run/public/41" fallback='RK' size='2' />
+                <Avatar src="https://avatar.iran.liara.run/public/41" loading="lazy" fallback='RK' size='2' />
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
                 <DropdownMenu.Label>
