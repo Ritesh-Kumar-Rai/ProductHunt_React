@@ -159,6 +159,12 @@ flowchart TD
 
 - In Product.jsx page in reviews section nested-reviews are remained to work on it and display all of them. Will see that also in future.
 
+- The Cart and Wishlist products are getting wiped when page refreshed... needed to store in localStorage or atleast sessionStorage.
+
+### Fixed:
+
+- The problem with Explore.jsx page re-rendering multiple times was fixed by implementing memoisation and optimisation techniques.
+
 ## 📑 Features Documentation
 
 Additional case studies and detailed explanations for:
