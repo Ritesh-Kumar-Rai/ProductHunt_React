@@ -1,6 +1,6 @@
 # 🚀ProductHunt - E-commerce frontend only Project
 
-🔗 [Live Demo](https://your-app.vercel.app)  
+🔗 [Live Demo](https://product-hunt-react.vercel.app)  
 📦 Frontend-only simulation of a scalable e-commerce platform.
 
 ## About
@@ -97,7 +97,7 @@ Redux, RTK or Zustand is not included in this project, because i am testing how 
 
 #### Demo video
 
-🎥 Watch the full demo on [LinkedIn](https://linkedin.com/your-demo-link)
+🎥 Watch the full demo on [LinkedIn](https://www.linkedin.com/posts/ritesh-kumar-rai-bb6901296_learninpublic-webdev-ecommerce-activity-7396935135037878272-zQSt?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEeuWXoBZGm1lXRgekFYbxupflEu8HA5hyA)
 
 ## 📂 Project Structure
 

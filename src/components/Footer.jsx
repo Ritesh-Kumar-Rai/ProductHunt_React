@@ -46,7 +46,7 @@ const Footer = () => {
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium">
                                 <li className="mb-4">
-                                    <a href="#" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn Video Post</a>
+                                    <a href="https://www.linkedin.com/posts/ritesh-kumar-rai-bb6901296_learninpublic-webdev-ecommerce-activity-7396935135037878272-zQSt?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEeuWXoBZGm1lXRgekFYbxupflEu8HA5hyA" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn Video Post</a>
                                 </li>
                                 <li>
                                     <a href="https://github.com/Ritesh-Kumar-Rai/ProductHunt_React/" target="_blank" rel="noopener noreferrer" aria-label="Documentation of this project" className="hover:underline">Documentation</a>
