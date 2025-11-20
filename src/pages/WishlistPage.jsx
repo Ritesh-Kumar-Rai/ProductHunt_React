@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import RelatedProductCard from "../components/RelatedProductCard";
 import SelectedItemCard from "../components/SelectedItemCard";
 import { useProductContext } from "../context/ProductContext";
 import Utility from "../Utils/Utility";
-import SEOHelmetInjector from "../components/shared/SEOHelmetInjector";
 
 const WishlistPage = () => {
 
@@ -14,7 +12,6 @@ const WishlistPage = () => {
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-      <SEOHelmetInjector title='Wishlist | ProductHunt' description='A wishlist page for all your favourite products' />
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Wishlist Page</h2>
 

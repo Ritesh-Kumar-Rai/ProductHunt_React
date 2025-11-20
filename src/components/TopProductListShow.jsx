@@ -1,14 +1,8 @@
-import React from 'react';
-
 import { FaLongArrowAltRight } from "react-icons/fa";
 import Card from './Card';
 import Button from './Button';
 
-const TopProductListShow = ({label, productsArr = []}) => {
-
-
-
-    const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const TopProductListShow = ({ label, productsArr = [] }) => {
 
     return (
         <section className='my-20'>
@@ -19,7 +13,7 @@ const TopProductListShow = ({label, productsArr = []}) => {
             <div className='w-full overflow-x-scroll flex items-center justify-start gap-5 p-2'>
                 {productsArr.map((each_item) => <Card key={each_item.id} item={each_item} />)}
             </div>
-            
+
         </section>
     )
 }

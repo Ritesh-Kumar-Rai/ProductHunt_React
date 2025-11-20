@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom';
 import SelectedItemCard from '../components/SelectedItemCard';
 // import RelatedProductCard from '../components/RelatedProductCard';
 import { useProductContext } from '../context/ProductContext';
 import Utility from '../Utils/Utility';
-// import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import CheckoutModal2 from '../components/CheckoutModal2';
 
 const ShoppingCartPage = () => {
@@ -13,7 +12,6 @@ const ShoppingCartPage = () => {
 
   const cart_products = state?.cart || [];
   const wishlist_products = state?.wishlist || [];
-  console.log(cart_products, state)
 
   // This method is responsible for computing Cart Summary like total, discount, coupon discount etc.
   const cartSummary = useMemo(() => {
@@ -28,7 +26,6 @@ const ShoppingCartPage = () => {
 
     state.products.products.forEach((item) => {
       if (Utility.isAvailableInCart(cart_products, item.id)) {
-        console.log(item.price, item.discountPercentage);
         const each_cart_product_obj = cart_products_map.get(item.id); // improved performace O(1) then cart-products.find() which is O(n) for each time
 
         const qty = each_cart_product_obj?.qty ?? 1;
@@ -44,18 +41,9 @@ const ShoppingCartPage = () => {
     return { sub_total, discount, delivery_charges, taxed_amount, additional_discount, total };
   }, [cart_products]);
 
-  // console.log(summary)
-  /* const [cartSummary, setCartSummary] = useState(computeSummary());
-
-  useEffect(() => {
-    setCartSummary(computeSummary());
-  }, [cart_products]); */
-
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-
-      {/* <SEOHelmetInjector title='Shopping Cart | ProductHunt' description='Purchase your selected products from this shopping cart' /> */}
 
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Shopping Cart</h2>

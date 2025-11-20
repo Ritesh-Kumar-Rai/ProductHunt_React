@@ -57,7 +57,6 @@ const Explore = () => {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
         setCategories(res);
       })
       .catch((error) => {
@@ -71,7 +70,6 @@ const Explore = () => {
           }
         });
         setCategories(cat);
-        console.log(cat);
       });
 
     return () => controller.abort();
@@ -125,7 +123,6 @@ const Explore = () => {
     });
   }, [products_obj?.products, searchQuery, appliedFilters]);
 
-  console.log(filteredProducts);
 
   // sorting algos
   const sortedProducts = useMemo(() => {

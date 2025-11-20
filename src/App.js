@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PageError from "./components/shared/PageError";
 import ProductContextProvider from "./context/ProductContext";
-import ContactPage from "./pages/ContactPage";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from "./context/AuthContext";
@@ -20,6 +19,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage"));
 const Product = lazy(() => import("./pages/Product"));
 const ShoppingCartPage = lazy(() => import("./pages/ShoppingCartPage"));
 const SignIn = lazy(() => import("./pages/SignIn"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 
 function App() {

@@ -27,13 +27,11 @@ const SelectedItemCard = ({ product_id, image_url = imac_front_fallback_img, dar
 
   useEffect(() => {
     const prevQty = cart_products.find((each_item) => each_item.id === product_id)?.qty;
-    console.log('prevQty', prevQty);
     if (prevQty === undefined) {
       setQty(product_info?.minimumOrderQuantity || 1);
       return;
     };
     const newQty = (prevQty < product_info?.minimumOrderQuantity) ? product_info?.minimumOrderQuantity : prevQty;
-    console.log('newQty', newQty);
     if (newQty !== qty) setQty(newQty);
     if (isChangedByUser !== false) setisChangedByUser(false);
 
@@ -68,7 +66,6 @@ const SelectedItemCard = ({ product_id, image_url = imac_front_fallback_img, dar
   };
 
   const handleQty = (type = 'minus') => {
-    console.log(type)
 
     setQty(prev => {
       let updated_qty = prev;

@@ -44,7 +44,6 @@ const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
     const handleSearch = () => {
         try {
             const input_value = searchInput.current.value;
-            console.log(input_value, typeof (input_value), input_value.length);
             setSearchQuery(input_value);
 
         } catch (error) {

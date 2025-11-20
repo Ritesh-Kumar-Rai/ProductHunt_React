@@ -26,7 +26,6 @@ const ProductContextProvider = (props) => {
     // the method to add product to wishlist
     const addToWishlist = useCallback((id) => {
         try {
-            console.warn("addToWishlist called for id", id);
             if (!id) {
                 throw new ReferenceError("`id` param is required before adding item to wishlist!");
             }
@@ -44,7 +43,6 @@ const ProductContextProvider = (props) => {
     // the method to remove product from wishlist
     const removeFromWishlist = useCallback((id) => {
         try {
-            console.warn("removeFromWishlist called for id", id);
             if (!id) {
                 throw new ReferenceError("`id` param is required before removing item from wishlist!");
             }
@@ -62,7 +60,6 @@ const ProductContextProvider = (props) => {
     // the method to add product to cart
     const addToCart = useCallback((id, qty) => {
         try {
-            console.warn("addToCart called for id", id);
             if (!id) {
                 throw new ReferenceError("`id` param is required before adding item to cart!");
             }
@@ -79,7 +76,6 @@ const ProductContextProvider = (props) => {
     // the method to remove product from cart
     const removeFromCart = useCallback((id) => {
         try {
-            console.warn("removeFromCart called for id", id);
             if (!id) {
                 throw new ReferenceError("`id` param is required before removing item from cart!");
             }

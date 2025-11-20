@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Box, Button, Checkbox, Flex, Heading, Tabs, Text } from '@radix-ui/themes';
-//import SEOHelmetInjector from '../components/shared/SEOHelmetInjector';
 import Utility from '../Utils/Utility';
 import { toast } from 'react-toastify';
 import useAuthManager from '../hooks/useAuthManager';
@@ -175,8 +174,6 @@ const SignIn = () => {
     return (
         // bg-gradient-to-r from-blue-300 to-blue-500
         <section id='sign-container' className='min-h-screen w-full rounded-lg p-2 flex items-center justify-center'>
-
-            {/* <SEOHelmetInjector title='SignIn | ProductHunt' description='Login to our ProductHunt to Buy for favourite products today' /> */}
 
             <div className='w-96 m-auto rounded-lg shadow-lg bg-white dark:bg-zinc-950 dark:shadow-black border-2 border-gray-100 dark:border-zinc-800 py-1 px-2'>
                 <Tabs.Root defaultValue="login" mt='2'>
