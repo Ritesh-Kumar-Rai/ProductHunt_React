@@ -1,13 +1,16 @@
 import { lazy, Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import Footer from "./components/Footer";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PageError from "./components/shared/PageError";
 import ProductContextProvider from "./context/ProductContext";
 import ErrorBoundary from "./components/shared/ErrorBoundary";
-import { ToastContainer } from "react-toastify";
+const LazyToastContainer = lazy(() =>
+  import("react-toastify").then((m) => ({ default: m.ToastContainer }))
+);
+
 import { AuthContextProvider } from "./context/AuthContext";
 import BlockPublicRoutes from "./components/shared/BlockPublicRoutes";
 import ProtectedRoutes from "./components/shared/ProtectedRoutes";
@@ -75,7 +78,9 @@ function App() {
                     <Route path="*" element={<PageError />} />
                   </Routes>
                 </Suspense>
-                <ToastContainer theme="dark" />
+                <Suspense fallback={null}>
+                  <LazyToastContainer theme="dark" />
+                </Suspense>
               </ErrorBoundary>
             </main>
           </AuthContextProvider>

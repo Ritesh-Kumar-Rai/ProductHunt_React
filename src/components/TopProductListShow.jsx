@@ -11,7 +11,10 @@ const TopProductListShow = ({ label, productsArr = [] }) => {
                 <Button label={"View More"} icon={<FaLongArrowAltRight size={15} />} placeright={true} />
             </div>
             <div className='w-full overflow-x-scroll flex items-center justify-start gap-5 p-2'>
-                {productsArr.map((each_item) => <Card key={each_item.id} item={each_item} />)}
+                {productsArr.length ? productsArr.map((each_item) => <Card key={each_item.id} item={each_item} />) : <div className="h-32 px-5 py-3 m-auto flex flex-col items-center justify-center gap-2 text-center">
+                    <b>No products to show!</b>
+                    <p className="text-slate-500">Try to refresh the page or go to explore page.. <br /> If you still didn't found the products "It's possibly an issue... try to contact developer"</p>
+                </div>}
             </div>
 
         </section>

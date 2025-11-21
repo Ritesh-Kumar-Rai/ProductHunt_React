@@ -17,7 +17,7 @@ const CheckboxFilter = ({ data_list = [], selectedDataFilter, setSelectedDataFil
                     name="category-filter-options"
                 >
                     <Flex direction="row" gap="3" wrap="wrap">
-                        {data_list?.map((data_name) => <CheckboxGroup.Item key={data_name} value={data_name}>{data_name}</CheckboxGroup.Item>)}
+                        {data_list.length ? data_list?.map((data_name) => <CheckboxGroup.Item key={data_name} value={data_name}>{data_name}</CheckboxGroup.Item>) : <div className="h-20 w-full flex items-center justify-center" style={{ color: 'red' }}><b>No data to display {label_name}!</b></div>}
                     </Flex>
                 </CheckboxGroup.Root>
             </ScrollArea>

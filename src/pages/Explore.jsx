@@ -14,7 +14,7 @@ const Explore = () => {
   const { state } = useProductContext();
   const products_obj = state?.products;
   const all_brands_list = useMemo(() => {
-    return Array.from(new Set(products_obj.products.flatMap((each_product) => (each_product?.brand) ? [each_product.brand] : [])))
+    return Array.from(new Set(products_obj.products?.flatMap((each_product) => (each_product?.brand) ? [each_product.brand] : [])))
   }, [products_obj?.products]); // new Set stores unique dataset, and Array.from() converts that Set object into an Array & finally wrapping inside useMemo will prevents re-calculations of same result on every render
 
   const [categories, setCategories] = useState([]);// all list of available categories will get restored by useEffect api called

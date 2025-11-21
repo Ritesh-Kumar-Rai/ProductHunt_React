@@ -1,10 +1,8 @@
 // The productStore is for useReducer() hook
-
-import product_raw_data from "../constants/products.json";
 import Utility from "../Utils/Utility";
 
 const INITIAL_VALUE = {
-  products: product_raw_data, // an object which has {products: Array(194), total: 194, skip: 0, limit: 194}
+  products: [], // an object which has {products: Array(194), total: 194, skip: 0, limit: 194}
   cart: [], // {id: Number, qty: Number}
   wishlist: [],
 };
@@ -14,6 +12,7 @@ const init = (prev_state) => {
 };
 
 const ACTIONS = {
+  PRELOAD_INITIAL_DATA: "PRELOAD_INITIAL_DATA",
   ADD_TO_CART: "ADD_TO_CART",
   ADD_TO_WISHLIST: "ADD_TO_WISHLIST",
   REMOVE_FROM_WISHLIST: "REMOVE_FROM_WISHLIST",
@@ -24,6 +23,22 @@ const ACTIONS = {
 const reducer = (state, action) => {
   try {
     switch (action?.type) {
+      case ACTIONS.PRELOAD_INITIAL_DATA: {
+        // 🔍 Validate basic structure
+        const isValid =
+          action.payload &&
+          typeof action.payload === "object" &&
+          Array.isArray(action.payload.products) && // dummyjson returns { products: [...] }
+          action.payload.products.length > 0;
+
+        if (!isValid) {
+          console.warn("Invalid API data — skipping update.");
+          return state; // ignore invalid data
+        }
+
+        return { ...state, products: action?.payload };
+      }
+
       case ACTIONS.ADD_TO_CART: {
         const isExist = Utility.isAvailableInCart(
           state.cart,

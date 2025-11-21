@@ -1,7 +1,7 @@
 // This is context for global state management which uses createContext & useContext hook from React 
 // And It also utilizes the product store via useReducer() hook for better state management
 
-import { createContext, useCallback, useContext, useReducer } from "react";
+import { createContext, lazy, useCallback, useContext, useEffect, useReducer } from "react";
 
 import { ACTIONS, init, INITIAL_VALUE, reducer } from "../store/productStore";
 
@@ -104,6 +104,42 @@ const ProductContextProvider = (props) => {
         } catch (error) {
             console.error(`${error.name} -> ${error.message}`);
         }
+    }, []);
+
+
+    useEffect(function () {
+        const controller = new AbortController();
+
+        const fetchData = async () => {
+            try {
+                const url = "https://dummyjson.com/products/";
+                const res = await fetch(url, { signal: controller?.signal });
+                const res2 = res.ok && await res.json();
+
+                dispatch({
+                    type: ACTIONS.PRELOAD_INITIAL_DATA,
+                    payload: res2,
+                });
+
+
+            } catch (error) {
+                console.error(`${error.name} -> ${error.message}`);
+
+                // 👉 Load offline JSON only when API fails
+                const offline_data = await import("../constants/products.json");
+
+                dispatch({
+                    type: ACTIONS.PRELOAD_INITIAL_DATA,
+                    payload: offline_data?.default,
+                });
+            }
+        };
+
+        fetchData();
+
+        return () => controller.abort();
+
+
     }, []);
 
 

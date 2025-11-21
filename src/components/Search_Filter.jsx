@@ -28,7 +28,7 @@ const colorsOfBadges = {
     priceRange: 'mint'
 };
 
-const Search_Filter = ({ all_brands_list, categories_list = [] }) => {
+const Search_Filter = ({ all_brands_list = [], categories_list = [] }) => {
 
     const [selectedCategory, setSelectedCategory] = useState([]); // user selected categories for filter
     const [selectedBrand, setSelectedBrand] = useState([]); // user selected brands for filter
