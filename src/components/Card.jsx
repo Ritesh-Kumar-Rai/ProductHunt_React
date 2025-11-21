@@ -55,7 +55,7 @@ const Card = ({ item }) => {
 
     return (<Link to={`/product/${item.id}`} className="card block min-w-48 max-w-48 overflow-hidden min-h-60 h-fit p-1 rounded-xl border dark:bg-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600 shadow-xl transition-all duration-300 hover:scale-105 hover:border-purple-800 dark:hover:bg-gray-500 will-change-transform">
         <div className='relative w-full h-32 overflow-hidden rounded-md group flex items-center justify-center'>
-            <img src={isImageError ? (placeholder_image) : item?.thumbnail} alt="image is unable to load" loading="lazy" onError={handleImgError} className='w-full h-full object-cover outline-none border-none transition-transform duration-200 transform scale-100 group-hover:scale-150' />
+            <img src={isImageError ? (placeholder_image) : item?.thumbnail} alt="image is unable to load" loading="lazy" decoding="async" onError={handleImgError} className='w-full h-full object-cover outline-none border-none transition-transform duration-200 transform scale-100 group-hover:scale-150' />
             <span className='absolute top-1 left-1 px-1 py-0.5 border-none outline-none shadow-md w-fit h-fit rounded-md bg-green-600 text-white text-xs font-medium'>-{item?.discountPercentage || null}%</span>
             <button type='button' aria-label="add to wishlist button" title="add to wishlist" className='absolute top-1 right-1 w-fit h-1/5 py-0.5 px-1 rounded-full bg-white active:scale-90 transition-transform duration-200' onClick={handleWishlistOperation}>{isWishlisted ? <RiPokerHeartsFill fill='crimson' /> : <RiPokerHeartsLine fill='black' />}</button>
         </div>

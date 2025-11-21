@@ -1,21 +1,24 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
-import Loader from "./components/Loader";
-import Footer from "./components/Footer";
-import PageError from "./components/shared/PageError";
-import ProductContextProvider from "./context/ProductContext";
-import ErrorBoundary from "./components/shared/ErrorBoundary";
-const LazyToastContainer = lazy(() =>
-  import("react-toastify").then((m) => ({ default: m.ToastContainer }))
-);
 
+// Core Components (critical, avoid lazy)
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Loader from "./components/Loader";
+import ErrorBoundary from "./components/shared/ErrorBoundary";
+import PageError from "./components/shared/PageError";
+
+// Context Providers (needed everywhere)
+import ProductContextProvider from "./context/ProductContext";
 import { AuthContextProvider } from "./context/AuthContext";
-import BlockPublicRoutes from "./components/shared/BlockPublicRoutes";
-import ProtectedRoutes from "./components/shared/ProtectedRoutes";
 import { FilterContextProvider } from "./context/FilterContext";
 
+// Route Protection
+import BlockPublicRoutes from "./components/shared/BlockPublicRoutes";
+import ProtectedRoutes from "./components/shared/ProtectedRoutes";
+
+// Lazy routes (non-critical)
 const Home = lazy(() => import("./pages/Home"));
 const Explore = lazy(() => import("./pages/Explore"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -24,6 +27,11 @@ const ShoppingCartPage = lazy(() => import("./pages/ShoppingCartPage"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
+
+// Lazy-loaded ToastContainer (non-critical)
+const LazyToastContainer = lazy(() =>
+  import("react-toastify").then((m) => ({ default: m.ToastContainer }))
+);
 
 function App() {
   return (
