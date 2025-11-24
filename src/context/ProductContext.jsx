@@ -112,7 +112,7 @@ const ProductContextProvider = (props) => {
 
         const fetchData = async () => {
             try {
-                const url = "https://dummyjson.com/products/";
+                const url = "https://dummyjson.com/products?limit=194";
                 const res = await fetch(url, { signal: controller?.signal });
                 const res2 = res.ok && await res.json();
 
